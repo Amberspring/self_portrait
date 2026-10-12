@@ -180,24 +180,32 @@ body {
 .info-name {
   font-family: 'Breton', sans-serif;
   font-weight: 300;
-  font-size: clamp(3rem, 6.5vw, 6rem);
-  letter-spacing: -0.03em;
-  line-height: 0.95;
+  font-size: clamp(2.1rem, 4.2vw, 3.8rem);
+  letter-spacing: -0.025em;
+  line-height: 1.08;
   color: #f0f0f0;
 }
 .info-role {
   font-family: 'Breton', sans-serif;
-  font-size: clamp(1.05rem, 1.35vw, 1.3rem);
-  line-height: 1.4;
-  color: rgba(255,255,255,1);
-  max-width: 40rem;
+  font-size: clamp(1rem, 1.25vw, 1.22rem);
+  font-weight: 600;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.96);
+  max-width: 44rem;
 }
 .info-desc {
   font-family: 'Breton', sans-serif;
-  font-size: clamp(1rem, 1.15vw, 1.15rem);
-  line-height: 1.65;
-  color: rgba(255,255,255,1);
-  max-width: 42rem;
+  font-size: clamp(0.92rem, 1.05vw, 1.05rem);
+  line-height: 1.62;
+  color: rgba(255,255,255,0.86);
+  max-width: 46rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.info-desc strong {
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .info-skills {
@@ -261,9 +269,10 @@ body {
 }
 
 .contact-panel {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(8, 8, 8, 0.48);
-  padding: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: #060608;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
+  padding: 1.35rem 1.4rem;
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
@@ -322,20 +331,71 @@ body {
 
 .contact-links {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  grid-template-columns: minmax(180px, 0.75fr) 1.25fr;
+  gap: clamp(1.2rem, 3vw, 2.5rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
   padding-top: 1rem;
 }
 
+.contact-channel-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem !important;
+}
+
+.contact-channel-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.contact-channel-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
 .contact-link {
-  color: rgba(255, 255, 255, 0.86);
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   transition: color 0.25s ease;
+  font-size: 0.95rem;
 }
 
 .contact-link:hover {
   color: #c084fc;
+}
+
+.contact-opp-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem !important;
+}
+
+.contact-opp-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+}
+
+.contact-opp-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #f0f0f0;
+}
+
+.contact-opp-desc {
+  font-family: 'Breton', sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.68);
 }
 
 .contact-direct {

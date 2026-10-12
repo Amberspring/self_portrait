@@ -460,149 +460,287 @@ async function setupScrollReveal() {
 
   
   const phraseEl = document.getElementById('reveal-phrase');
-  phraseEl.innerHTML = [...phraseEl.textContent].map(ch =>
-    `<span class="rp-char" style="display:inline-block;">${ch === ' ' ? ' ' : ch}</span>`
-  ).join('');
-  const phraseChars = phraseEl.querySelectorAll('.rp-char');
-  gsap.set(phraseChars, isMobile ? { opacity: 0 } : { opacity: 0, filter: 'blur(10px)' });
+  let phraseChars = [];
+  let scrollTlRef = null;
+  let phraseExitTlRef = null;
+  let scrollStRef = null;
+  let exitStRef = null;
 
-  
-  const FRAME_DIR = 'assets/images/hero%20sequence/';
-  const FRAME_EXT = '.jpg';
-  const FRAME_PAD = 4;
-  const TOTAL_FRAMES = 341;
-  const FRAME_CACHE_KEY = '20260416-r2'; 
-  const frameUrl = n => `${FRAME_DIR}${String(n).padStart(FRAME_PAD, '0')}${FRAME_EXT}?v=${FRAME_CACHE_KEY}`;
-
-  const frames = new Array(TOTAL_FRAMES);
-  let loadedFrameIdx = [];
-  let totalFrames = 0;
-  let drawnIdx = -1;
-
-  function rebuildLoadedFrameIndex() {
-    loadedFrameIdx = [];
-    for (let i = 0; i < frames.length; i++) {
-      if (frames[i] && frames[i].naturalWidth) loadedFrameIdx.push(i);
-    }
-    totalFrames = loadedFrameIdx.length;
+  function splitRevealPhraseText(text) {
+    const raw = text || (window.__t && window.__t('index.reveal.phrase')) || phraseEl.textContent || '优秀的商业需要连接数理、代码、金融与市场';
+    phraseEl.innerHTML = [...raw].map(ch =>
+      `<span class="rp-char" style="display:inline-block;">${ch === ' ' ? '&nbsp;' : ch}</span>`
+    ).join('');
+    phraseChars = phraseEl.querySelectorAll('.rp-char');
+    gsap.set(phraseChars, isMobile ? { opacity: 0 } : { opacity: 0, filter: 'blur(10px)' });
   }
 
-  
+  splitRevealPhraseText(window.__t ? window.__t('index.reveal.phrase') : phraseEl.textContent);
+
+  // Dark-Purple Streaming Data Matrix & Quantitative Wave Canvas Engine
   canvas.style.willChange = 'transform';
+  let currentScrollProgress = 0;
+  let ambientPhase = 0;
+  let isRevealVisible = true;
+
+  const MATRIX_TOKENS = [
+    '∑', '∂', '∇', 'α', 'β', 'λ', 'σ²', 'μ', '∫', 'Δ',
+    'LOB', '01', '10', 'E[X]', 'P(A|B)', 'f(x)', 'O(n)', 'dW_t', 'VaR', 'Sharpe'
+  ];
+  const PARTICLE_COUNT = isMobile ? 38 : 76;
+  const matrixParticles = Array.from({ length: PARTICLE_COUNT }, (_, i) => {
+    const angle = (i / PARTICLE_COUNT) * Math.PI * 2 + (i * 1.618);
+    const radius = 0.08 + ((i * 73) % 100) / 100 * 0.65;
+    return {
+      x: Math.cos(angle) * radius,
+      y: Math.sin(angle) * radius * 0.72,
+      z: ((i * 37) % 100) / 100,
+      speed: 0.25 + ((i * 19) % 100) / 100 * 0.55,
+      token: MATRIX_TOKENS[i % MATRIX_TOKENS.length],
+      phase: i * 0.9,
+      isNode: i % 3 === 0,
+    };
+  });
 
   function resizeCanvas() {
-    
     const dpr = isSlowHardware ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
     canvas.width = Math.round(window.innerWidth * dpr);
     canvas.height = Math.round(window.innerHeight * dpr);
-    if (drawnIdx >= 0) { const i = drawnIdx; drawnIdx = -1; drawFrame(i); }
+    renderQuantMatrixCanvas(currentScrollProgress, ambientPhase);
   }
-  let _lastDrawMs = 0;
-  function drawFrame(i) {
-    if (i === drawnIdx) return;
-    
-    if (isSlowHardware) {
-      const now = performance.now();
-      if (now - _lastDrawMs < 32) return;
-      _lastDrawMs = now;
-    }
-    if (i < 0 || i >= frames.length) return;
-    const img = frames[i];
-    if (!(img && img.naturalWidth)) return;
-    const cw = canvas.width, ch = canvas.height;
-    const iw = img.naturalWidth, ih = img.naturalHeight;
-    const s = Math.max(cw / iw, ch / ih);
-    const dw = iw * s, dh = ih * s;
+
+  function renderQuantMatrixCanvas(progress, timeSec) {
+    const cw = canvas.width;
+    const ch = canvas.height;
+    if (!cw || !ch) return;
+
+    const p = Math.min(1, Math.max(0, progress));
+    const cx = cw * 0.5;
+    const cy = ch * 0.5;
+    const minDim = Math.min(cw, ch);
+
+    // 1. Deep obsidian-violet radial atmosphere
     ctx.clearRect(0, 0, cw, ch);
-    ctx.drawImage(img, (cw - dw) * 0.5, (ch - dh) * 0.5, dw, dh);
-    drawnIdx = i;
-  }
-  function probe(n) {
-    return new Promise(resolve => {
-      const img = new Image();
-      img.decoding = 'async';
-      img.onload = () => resolve(img);
-      img.onerror = () => resolve(null);
-      img.src = frameUrl(n);
-    });
-  }
-  async function probeWithRetry(n, attempts = 3) {
-    for (let k = 0; k < attempts; k++) {
-      const img = await probe(n);
-      if (img) return img;
-    }
-    return null;
-  }
-  async function loadFirstBatch() {
-    const first = await probeWithRetry(1, 3);
-    if (!first) { console.error('Frame 1 failed to load!'); return 0; }
-    frames[0] = first;
-    rebuildLoadedFrameIndex();
-    resizeCanvas();
-    drawFrame(0);
+    const bgGrad = ctx.createRadialGradient(
+      cx, cy * (1 - p * 0.12), minDim * 0.04,
+      cx, cy, Math.max(cw, ch) * 0.78
+    );
+    bgGrad.addColorStop(0, `rgba(58, 18, 105, ${0.52 + p * 0.22})`);
+    bgGrad.addColorStop(0.42, `rgba(24, 9, 48, ${0.85 + p * 0.1})`);
+    bgGrad.addColorStop(0.78, '#090512');
+    bgGrad.addColorStop(1, '#050308');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, cw, ch);
 
-    const SPEED_BATCH = 10;
-    const t0 = performance.now();
-    const batchNums = Array.from({ length: Math.min(SPEED_BATCH, TOTAL_FRAMES - 1) }, (_, k) => k + 2);
-    await Promise.all(batchNums.map(async n => {
-      const img = await probeWithRetry(n, 2);
-      if (img) frames[n - 1] = img;
-    }));
-    const elapsed = performance.now() - t0;
-    rebuildLoadedFrameIndex();
-    return elapsed > 4000 ? 3 : elapsed > 2000 ? 2 : 1;
-  }
+    // Secondary glowing nebula core shifting with scroll
+    const coreGrad = ctx.createRadialGradient(
+      cx + Math.sin(timeSec * 0.6 + p * 3) * cw * 0.12,
+      cy + Math.cos(timeSec * 0.4 + p * 2.5) * ch * 0.08,
+      0,
+      cx,
+      cy,
+      minDim * (0.42 + p * 0.18)
+    );
+    coreGrad.addColorStop(0, 'rgba(168, 85, 247, 0.24)');
+    coreGrad.addColorStop(0.5, 'rgba(147, 51, 234, 0.08)');
+    coreGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = coreGrad;
+    ctx.fillRect(0, 0, cw, ch);
 
-  async function loadRemainingFrames(skip) {
-    const BATCH_END = 11;
-    const toLoad = [];
-    for (let i = BATCH_END + 1; i <= TOTAL_FRAMES; i++) {
-      if (skip <= 1 || i % skip === 0) toLoad.push(i);
+    // 2. Quantitative Harmonic 3D Wave Surface (Upper & Lower Horizon)
+    const rows = isMobile ? 16 : 26;
+    const cols = isMobile ? 36 : 64;
+    const phaseShift = timeSec * 1.15 + p * 8.5;
+    const fov = minDim * (0.75 + p * 0.35);
+    const camY = -minDim * (0.16 - p * 0.06);
+
+    function project3D(nx, ny, nz) {
+      const zDist = nz + 1.35;
+      const scale = fov / Math.max(0.18, zDist);
+      return {
+        x: cx + nx * scale,
+        y: cy + (ny - camY / fov) * scale,
+        scale,
+        zDist,
+      };
     }
-    let cursor = 0;
-    const failed = [];
-    
-    
-    const CONCURRENCY = isSlowHardware ? 2 : 6;
-    const worker = async () => {
-      while (cursor < toLoad.length) {
-        const n = toLoad[cursor++];
-        if (frames[n - 1]?.naturalWidth) continue;
-        const img = await probeWithRetry(n, 2);
-        if (img) { frames[n - 1] = img; rebuildLoadedFrameIndex(); }
-        else failed.push(n);
+
+    const gridPoints = [];
+    for (let r = 0; r < rows; r++) {
+      const rowArr = [];
+      const rz = ((r / (rows - 1)) * 2.2 - ((p * 1.6 + timeSec * 0.18) % (2.2 / rows)));
+      const depthNorm = r / (rows - 1);
+      for (let c = 0; c < cols; c++) {
+        const u = (c / (cols - 1)) * 2 - 1; // -1 to 1
+        const nx = u * 2.1;
+        const distCenter = Math.sqrt(u * u + (depthNorm - 0.45) * (depthNorm - 0.45));
+        // Quantitative harmonic wave interference (simulating volatility surface / order book depth)
+        const wave1 = Math.sin(distCenter * 7.5 - phaseShift) * Math.cos(u * 3.2 + phaseShift * 0.4);
+        const wave2 = Math.sin(u * 6.0 - depthNorm * 5.0 + phaseShift * 0.7) * 0.45;
+        const amp = (0.11 + p * 0.09) * (1 - depthNorm * 0.35);
+        const ny = 0.36 + (wave1 + wave2) * amp;
+        const pt = project3D(nx, ny, depthNorm * 2.1);
+        pt.waveVal = wave1 + wave2;
+        pt.depthNorm = depthNorm;
+        pt.u = u;
+        rowArr.push(pt);
       }
-    };
-    await Promise.all(Array.from({ length: CONCURRENCY }, worker));
-    for (const n of [...failed]) {
-      const img = await probeWithRetry(n, 2);
-      if (img) { frames[n - 1] = img; rebuildLoadedFrameIndex(); }
+      gridPoints.push(rowArr);
     }
+
+    // Draw horizontal harmonic wave contours
+    ctx.save();
+    for (let r = 0; r < rows; r++) {
+      const rowArr = gridPoints[r];
+      const depthAlpha = Math.sin((1 - rowArr[0].depthNorm) * Math.PI) * 0.68;
+      if (depthAlpha <= 0.02) continue;
+
+      ctx.beginPath();
+      for (let c = 0; c < cols; c++) {
+        const pt = rowArr[c];
+        if (c === 0) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
+      }
+      const isHighlightRow = (r + Math.floor(p * 12)) % 4 === 0;
+      ctx.strokeStyle = isHighlightRow
+        ? `rgba(192, 132, 252, ${depthAlpha * 0.85})`
+        : `rgba(147, 51, 234, ${depthAlpha * 0.48})`;
+      ctx.lineWidth = isHighlightRow ? 1.5 : 0.9;
+      ctx.stroke();
+    }
+
+    // Draw longitudinalmeridian lines for 3D tensor grid feel
+    const colStep = isMobile ? 3 : 4;
+    for (let c = 0; c < cols; c += colStep) {
+      ctx.beginPath();
+      for (let r = 0; r < rows; r++) {
+        const pt = gridPoints[r][c];
+        if (r === 0) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
+      }
+      const edgeFade = 1 - Math.abs((c / (cols - 1)) * 2 - 1) * 0.75;
+      ctx.strokeStyle = `rgba(168, 85, 247, ${0.16 * edgeFade})`;
+      ctx.lineWidth = 0.75;
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // 3. Upper Mirrored Quantitative Ripple Rings (Concentric Data Interferometry)
+    ctx.save();
+    const ringCount = isMobile ? 5 : 8;
+    for (let k = 0; k < ringCount; k++) {
+      const ringProgress = ((k / ringCount) + p * 0.85 + timeSec * 0.06) % 1;
+      const rx = minDim * (0.12 + ringProgress * 0.65);
+      const ry = rx * (0.38 + 0.15 * Math.sin(p * Math.PI));
+      const ringAlpha = Math.sin(ringProgress * Math.PI) * 0.24;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, rx, ry, p * 0.35 + k * 0.08, 0, Math.PI * 2);
+      ctx.strokeStyle = k % 2 === 0
+        ? `rgba(192, 132, 252, ${ringAlpha})`
+        : `rgba(147, 51, 234, ${ringAlpha * 0.8})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // 4. Streaming Data Matrix & Mathematical/Financial Symbols in 3D Z-space
+    ctx.save();
+    const fontSizeBase = Math.max(10, Math.round(minDim * 0.016));
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const projectedNodes = [];
+    for (let i = 0; i < matrixParticles.length; i++) {
+      const mp = matrixParticles[i];
+      // Z moves toward viewer as scroll progress and ambient time advance
+      let z = (mp.z - (p * 1.35 * mp.speed + timeSec * 0.045 * mp.speed)) % 1;
+      if (z < 0) z += 1;
+
+      const perspective = 1 / (0.22 + z * 1.15);
+      const px = cx + mp.x * cw * 0.46 * perspective;
+      const py = cy + mp.y * ch * 0.46 * perspective;
+
+      if (px < -40 || px > cw + 40 || py < -40 || py > ch + 40) continue;
+
+      const alpha = Math.sin((1 - z) * Math.PI) * (0.35 + p * 0.45);
+      if (alpha <= 0.04) continue;
+
+      if (mp.isNode) {
+        projectedNodes.push({ x: px, y: py, alpha, z });
+      }
+
+      const size = Math.max(9, Math.min(24, Math.round(fontSizeBase * perspective * 0.55)));
+      ctx.font = `600 ${size}px "Inter", monospace`;
+      ctx.fillStyle = z < 0.38
+        ? `rgba(233, 213, 255, ${alpha * 0.9})`
+        : `rgba(168, 85, 247, ${alpha * 0.7})`;
+      ctx.fillText(mp.token, px, py);
+    }
+
+    // Connect nearby data nodes with subtle topological links
+    const maxDistSq = (minDim * 0.16) * (minDim * 0.16);
+    ctx.lineWidth = 0.8;
+    for (let i = 0; i < projectedNodes.length; i++) {
+      const a = projectedNodes[i];
+      for (let j = i + 1; j < projectedNodes.length; j++) {
+        const b = projectedNodes[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const dSq = dx * dx + dy * dy;
+        if (dSq < maxDistSq) {
+          const linkAlpha = (1 - dSq / maxDistSq) * Math.min(a.alpha, b.alpha) * 0.42;
+          ctx.strokeStyle = `rgba(192, 132, 252, ${linkAlpha})`;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+    ctx.restore();
+
+    // 5. Central Vignette for crisp typography legibility
+    const textProtectGrad = ctx.createRadialGradient(cx, cy, minDim * 0.05, cx, cy, minDim * 0.55);
+    textProtectGrad.addColorStop(0, 'rgba(8, 4, 15, 0.42)');
+    textProtectGrad.addColorStop(0.6, 'rgba(8, 4, 15, 0.15)');
+    textProtectGrad.addColorStop(1, 'rgba(5, 3, 8, 0.55)');
+    ctx.fillStyle = textProtectGrad;
+    ctx.fillRect(0, 0, cw, ch);
+  }
+
+  function drawFrameAtProgress(progress) {
+    currentScrollProgress = Math.min(1, Math.max(0, progress));
+    renderQuantMatrixCanvas(currentScrollProgress, ambientPhase);
+  }
+
+  // Subtle ambient animation loop when reveal section is near viewport
+  let lastRafTime = performance.now();
+  function tickAmbientReveal(now) {
+    const dt = Math.min(0.05, (now - lastRafTime) * 0.001);
+    lastRafTime = now;
+    if (isRevealVisible && !document.hidden) {
+      ambientPhase += dt;
+      renderQuantMatrixCanvas(currentScrollProgress, ambientPhase);
+    }
+    requestAnimationFrame(tickAmbientReveal);
   }
 
   window.addEventListener('resize', resizeCanvas);
-  let frameSkip = await loadFirstBatch();
-  if (isMobile) frameSkip = Math.max(frameSkip, 3);
-
-  if (totalFrames === 0) {
-    console.error('No reveal frames loaded.');
-    return;
-  }
-
-  loadRemainingFrames(frameSkip).catch(err => console.error('Frame background load error:', err));
+  resizeCanvas();
+  requestAnimationFrame(tickAmbientReveal);
 
   const introSettledY = Number(gsap.getProperty(pContent, 'y')) || 0;
-  
   const introXvw = `${_introSettledXvw}vw`;
 
   const scrollTl = gsap.timeline({ paused: true });
+  scrollTlRef = scrollTl;
 
   scrollTl.fromTo(pContent, { x: introXvw, y: introSettledY }, { x: introXvw, y: 0, duration: 0.3, ease: 'none' }, 0);
   scrollTl.fromTo('#hero-tagline', { opacity: 1 }, { opacity: 0, duration: 0.15, ease: 'none' }, 0);
   scrollTl.fromTo('#hero-bar', { opacity: 1 }, { opacity: 0, duration: 0.15, ease: 'none' }, 0);
   scrollTl.fromTo('#hero-line', { opacity: 1 }, { opacity: 0, duration: 0.15, ease: 'none' }, 0);
+  scrollTl.fromTo('#lang-toggle-btn', { opacity: 1 }, { opacity: 0, duration: 0.15, ease: 'none' }, 0);
 
-  
   scrollTl.fromTo(revealWrap, { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0.3);
   scrollTl.fromTo(revealSeq, { scale: 0 }, {
     scale: 1,
@@ -610,7 +748,6 @@ async function setupScrollReveal() {
     ease: 'none',
   }, 0.3);
 
-  
   const mobile = isMobileViewport();
   const exitLeft = mobile ? '-35vw' : '-55vw';
   const exitRight = mobile ? '35vw' : '55vw';
@@ -621,37 +758,27 @@ async function setupScrollReveal() {
 
   scrollTl.set(nameLayer, { autoAlpha: 0 }, 0.98);
 
-  
   scrollTl.to(phraseChars, {
     opacity: 1,
     ...(isMobile ? {} : { filter: 'blur(0px)' }),
     duration: 0.06,
     ease: 'none',
     stagger: { each: 0.007, from: 'start' },
-  }, 0.62);
+  }, 0.62, 'phraseReveal');
 
   const REVEAL_PHASE_START = 0.3;
   const REVEAL_PHASE_DURATION = 0.7;
   const FRAME_PROGRESS_AT_EXIT_START = 0.82;
 
-  function drawFrameAtProgress(progress) {
-    if (totalFrames === 0) return;
-    const clamped = Math.min(1, Math.max(0, progress));
-    const loadedPos = Math.round(clamped * (totalFrames - 1));
-    const sourceIdx = loadedFrameIdx[loadedPos];
-    if (sourceIdx == null) return;
-    drawFrame(sourceIdx);
-  }
-
-  ScrollTrigger.create({
+  scrollStRef = ScrollTrigger.create({
     trigger: '#scroll-wrap',
     start: 'top top',
     end: 'bottom bottom',
     scrub: 0.5,
     animation: scrollTl,
     onUpdate: (self) => {
-      
       const p = self.progress;
+      isRevealVisible = p >= 0.15;
       if (keepIntroNameAnchored && p > 0.001) {
         stopIntroNameAnchor();
       }
@@ -664,20 +791,18 @@ async function setupScrollReveal() {
     },
   });
 
-  
   const revealOverlay = document.getElementById('reveal-overlay');
 
   const exitTl = gsap.timeline({ paused: true });
   exitTl.to(revealWrap, { y: '-50vh', ease: 'none', duration: 1 }, 0);
   exitTl.to(revealOverlay, { opacity: 0.7, ease: 'none', duration: 0.66 }, 0);
-  
-  
-  
+
   if (!isMobile && (CSS.supports('backdrop-filter', 'blur(1px)') || CSS.supports('-webkit-backdrop-filter', 'blur(1px)'))) {
     gsap.set(revealOverlay, { backdropFilter: 'blur(0px)' });
     exitTl.to(revealOverlay, { backdropFilter: 'blur(16px)', ease: 'none', duration: 1 }, 0);
   }
   const phraseExitTl = gsap.timeline({ paused: true });
+  phraseExitTlRef = phraseExitTl;
   phraseExitTl.to(phraseChars, {
     opacity: 0,
     duration: 0.2,
@@ -685,7 +810,7 @@ async function setupScrollReveal() {
     immediateRender: false,
     stagger: { each: 0.01, from: 'end' },
   });
-  ScrollTrigger.create({
+  exitStRef = ScrollTrigger.create({
     trigger: '#section-after',
     start: 'top bottom',
     end: 'top top',
@@ -700,14 +825,63 @@ async function setupScrollReveal() {
     scrub: true,
     animation: exitTl,
     onUpdate: (self) => {
+      isRevealVisible = self.progress < 0.99;
       const exitFrameProgress = FRAME_PROGRESS_AT_EXIT_START + (self.progress * (1 - FRAME_PROGRESS_AT_EXIT_START));
       drawFrameAtProgress(exitFrameProgress);
     },
-    onLeave: () => drawFrameAtProgress(1),
+    onLeave: () => {
+      isRevealVisible = false;
+      drawFrameAtProgress(1);
+    },
+    onEnterBack: () => {
+      isRevealVisible = true;
+    },
     onLeaveBack: () => drawFrameAtProgress(FRAME_PROGRESS_AT_EXIT_START),
   });
 
-  
+  // Live rebuild hook when switching ZH / EN so reveal-phrase updates cleanly at current scroll position
+  window.rebuildRevealPhrase = function (newText, isDynamic) {
+    if (!isDynamic || !scrollTlRef || !phraseExitTlRef) return;
+    const savedScrollProgress = scrollTlRef.progress();
+    const savedExitProgress = phraseExitTlRef.progress();
+
+    splitRevealPhraseText(newText);
+
+    if (savedExitProgress > 0.01) {
+      gsap.set(phraseChars, {
+        opacity: Math.max(0, 1 - savedExitProgress),
+        ...(isMobile ? {} : { filter: 'blur(0px)' }),
+      });
+    } else if (savedScrollProgress >= 0.62) {
+      const revealRatio = Math.min(1, (savedScrollProgress - 0.62) / 0.28);
+      phraseChars.forEach((ch, idx) => {
+        const charThreshold = idx / Math.max(1, phraseChars.length);
+        const visible = revealRatio >= charThreshold;
+        gsap.set(ch, {
+          opacity: visible ? 1 : 0,
+          ...(isMobile ? {} : { filter: visible ? 'blur(0px)' : 'blur(10px)' }),
+        });
+      });
+    }
+
+    scrollTlRef.to(phraseChars, {
+      opacity: 1,
+      ...(isMobile ? {} : { filter: 'blur(0px)' }),
+      duration: 0.06,
+      ease: 'none',
+      stagger: { each: 0.007, from: 'start' },
+    }, 0.62);
+
+    phraseExitTlRef.clear();
+    phraseExitTlRef.to(phraseChars, {
+      opacity: 0,
+      duration: 0.2,
+      ease: 'none',
+      immediateRender: false,
+      stagger: { each: 0.01, from: 'end' },
+    });
+  };
+
   setupAboutSection();
 }
 
@@ -785,9 +959,45 @@ function setupAboutSection() {
   });
 
   
-  const photo = photoWrap.querySelector('.about-photo');
+  const photoFrame = document.getElementById('about-photo-frame') || photoWrap.querySelector('.about-photo');
+  const photoTrack = document.getElementById('about-photo-track');
+  const photoDots = document.querySelectorAll('.about-photo-dot');
+  const photoSlides = photoWrap.querySelectorAll('.about-photo-slide');
+
+  // Load saved custom photos from localStorage or fallback cleanly if photo1~3.jpg aren't placed yet
+  const STORAGE_KEY = 'flora_custom_profile_photos_v1';
+  let savedPhotos = null;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) savedPhotos = JSON.parse(raw);
+  } catch (e) {}
+
+  function applySlideSources(sources) {
+    if (!photoSlides.length || !sources || !sources.length) return;
+    const s0 = sources[0];
+    const s1 = sources[1] || sources[0];
+    const s2 = sources[2] || sources[0];
+    const list = [s0, s1, s2, s0];
+    photoSlides.forEach((img, idx) => {
+      if (list[idx]) img.src = list[idx];
+    });
+  }
+
+  if (savedPhotos && Array.isArray(savedPhotos) && savedPhotos.length > 0) {
+    applySlideSources(savedPhotos);
+  }
+
+  photoSlides.forEach((img) => {
+    img.addEventListener('error', function onErr() {
+      const fb = img.getAttribute('data-fallback');
+      if (fb && img.src.indexOf(fb) === -1) {
+        img.src = fb;
+      }
+    });
+  });
+
   function initPhotoScroll() {
-    
+    if (!photoFrame) return;
     var tl = gsap.timeline({
       scrollTrigger: {
         trigger: photoWrap,
@@ -796,16 +1006,83 @@ function setupAboutSection() {
         scrub: true,
       },
     });
-    
-    tl.fromTo(photo, { y: '-50%' }, { y: '50%', ease: 'none' }, 0);
-    
-    tl.fromTo(photo, { opacity: 0, filter: 'blur(20px)' }, { opacity: 1, filter: 'blur(0px)', ease: 'none', duration: 0.3 }, 0);
+    tl.fromTo(photoFrame, { y: '-50%' }, { y: '50%', ease: 'none' }, 0);
+    tl.fromTo(photoFrame, { opacity: 0, filter: 'blur(20px)' }, { opacity: 1, filter: 'blur(0px)', ease: 'none', duration: 0.3 }, 0);
   }
-  if (photo.decode) {
-    photo.decode().then(initPhotoScroll).catch(initPhotoScroll);
-  } else {
-    photo.onload = initPhotoScroll;
-    if (photo.complete) initPhotoScroll();
+
+  const firstImg = photoSlides[0] || photoFrame;
+  if (firstImg && firstImg.decode) {
+    firstImg.decode().then(initPhotoScroll).catch(initPhotoScroll);
+  } else if (firstImg) {
+    firstImg.onload = initPhotoScroll;
+    if (firstImg.complete) initPhotoScroll();
+  }
+
+  // 2s per slide smooth auto-scrolling carousel
+  if (photoTrack && photoSlides.length >= 4) {
+    let currentSlide = 0;
+    const totalRealSlides = 3;
+    let slideTimer = null;
+    let isAnimating = false;
+
+    function updateDots(idx) {
+      const activeIdx = idx % totalRealSlides;
+      photoDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === activeIdx);
+      });
+    }
+
+    function goToSlide(nextIndex, animate = true) {
+      if (!animate) {
+        gsap.set(photoTrack, { xPercent: -100 * nextIndex });
+        updateDots(nextIndex);
+        return;
+      }
+      isAnimating = true;
+      updateDots(nextIndex);
+      gsap.to(photoTrack, {
+        xPercent: -100 * nextIndex,
+        duration: 0.85,
+        ease: 'power3.inOut',
+        overwrite: true,
+        onComplete: () => {
+          if (nextIndex >= totalRealSlides) {
+            currentSlide = 0;
+            gsap.set(photoTrack, { xPercent: 0 });
+          } else {
+            currentSlide = nextIndex;
+          }
+          isAnimating = false;
+        },
+      });
+    }
+
+    function startAutoSlide() {
+      stopAutoSlide();
+      slideTimer = setInterval(() => {
+        if (document.hidden || isAnimating) return;
+        goToSlide(currentSlide + 1, true);
+      }, 2000);
+    }
+
+    function stopAutoSlide() {
+      if (slideTimer) {
+        clearInterval(slideTimer);
+        slideTimer = null;
+      }
+    }
+
+    photoDots.forEach((dot) => {
+      dot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const targetIdx = parseInt(dot.getAttribute('data-index') || '0', 10);
+        currentSlide = targetIdx;
+        goToSlide(targetIdx, true);
+        startAutoSlide();
+      });
+    });
+
+    startAutoSlide();
   }
 
   setupProjectsSection();
@@ -1347,6 +1624,21 @@ function setupProjectsSection() {
         });
       });
     });
+
+    function refreshOpenSkillHeight() {
+      groups.forEach(function (g) {
+        if (g.classList.contains('open')) {
+          var body = g.querySelector('.skill-body');
+          if (body) body.style.height = body.scrollHeight + 'px';
+        }
+      });
+    }
+    window.addEventListener('resize', refreshOpenSkillHeight);
+    var prevLangHook = window.onLanguageChanged;
+    window.onLanguageChanged = function (lang) {
+      if (typeof prevLangHook === 'function') prevLangHook(lang);
+      refreshOpenSkillHeight();
+    };
   })();
 
   

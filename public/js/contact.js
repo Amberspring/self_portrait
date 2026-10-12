@@ -6,24 +6,6 @@ if (history.scrollRestoration) {
 window.scrollTo(0, 0);
 requestAnimationFrame(() => window.scrollTo(0, 0));
 
-(function () {
-  const projectData = window._heroProjectData;
-  if (!projectData) return;
-
-  const blob = new Blob([JSON.stringify(projectData)], { type: 'application/json' });
-  const blobUrl = URL.createObjectURL(blob);
-  const container = document.getElementById('contact-canvas');
-  
-  if (container) {
-    container.setAttribute('data-cr-project-src', blobUrl);
-    CoreRenderer.init().then(() => {
-      URL.revokeObjectURL(blobUrl);
-    }).catch(err => {
-      console.error('CoreRenderer init failed:', err);
-    });
-  }
-})();
-
 document.querySelectorAll('[data-chr]').forEach(function (el) {
   const text = el.dataset.chr;
   el.removeAttribute('data-chr');

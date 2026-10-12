@@ -773,15 +773,91 @@ a.chr-hover {
   z-index: 5;
 }
 
-.about-photo {
+.about-photo,
+.about-photo-frame {
+  position: relative;
   width: min(55vw, 780px);
-  height: auto;
-  object-fit: cover;
+  aspect-ratio: 2500 / 3001;
+  overflow: hidden;
   display: block;
   will-change: transform;
   opacity: 0;
   filter: blur(20px);
   border-radius: 280px 0 0 280px;
+  background: #141414;
+}
+
+.about-photo-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.about-photo-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.about-photo-dots {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 2.2rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.about-photo-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: pointer;
+}
+
+.about-photo-dot.active {
+  width: 22px;
+  background: #a855f7;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.8);
+}
+
+.about-photo-upload-btn {
+  position: absolute;
+  top: 1.4rem;
+  right: 1.6rem;
+  z-index: 12;
+  background: rgba(15, 15, 20, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(168, 85, 247, 0.45);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.3s ease, transform 0.3s ease;
+}
+
+.about-photo-frame:hover .about-photo-upload-btn {
+  opacity: 1;
+}
+
+.about-photo-upload-btn:hover {
+  background: rgba(147, 51, 234, 0.85);
+  color: #fff;
+  transform: scale(1.04);
 }
 
 
@@ -1042,22 +1118,7 @@ a.chr-hover {
 }
 
 .scroll-pct {
-  position: fixed;
-  left: 2rem;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 30015;
-  font-family: 'Breton', sans-serif;
-  font-size: clamp(0.8rem, 1vw, 0.95rem);
-  color: #fff;
-  letter-spacing: 0.02em;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.4s;
-}
-
-.scroll-pct.visible {
-  opacity: 1;
+  display: none !important;
 }
 
 .st-bar {
@@ -1122,35 +1183,45 @@ a.chr-hover {
 .skills-left {
   position: sticky;
   top: 0;
-  width: 60%;
+  width: 52%;
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-top: 15vh;
+  padding-top: 12vh;
   padding-left: 8rem;
   padding-right: 4rem;
   flex-shrink: 0;
 }
 
 .skills-subtitle {
-  font-family: 'Breton', sans-serif;
-  font-size: clamp(1rem, 1.5vw, 1.2rem);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  color: #f0f0f0;
-  margin-bottom: 2.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #a855f7;
+  margin-bottom: 1rem;
   line-height: 1.2;
 }
 
-.skills-text {
+.skills-heading {
   font-family: 'Zirena', sans-serif;
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-size: clamp(2rem, 3.4vw, 3rem);
   font-weight: 800;
   text-transform: uppercase;
-  line-height: 1.1;
+  line-height: 1.08;
   color: #f0f0f0;
-  max-width: 100%;
+  margin-bottom: 1.2rem;
+}
+
+.skills-text {
+  font-family: 'Breton', sans-serif;
+  font-size: clamp(1.05rem, 1.45vw, 1.35rem);
+  font-weight: 300;
+  line-height: 1.55;
+  color: rgba(240, 240, 240, 0.85);
+  max-width: 36rem;
   margin-bottom: 0;
 }
 
@@ -1162,7 +1233,29 @@ a.chr-hover {
   width: 100%;
   height: 1px;
   background: rgba(255, 255, 255, 0.15);
-  margin: 3rem 0;
+  margin: 2rem 0;
+}
+
+.skills-cross {
+  margin-bottom: 2rem;
+  max-width: 34rem;
+}
+
+.skills-cross-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(192, 132, 252, 0.9);
+  margin-bottom: 0.5rem;
+}
+
+.skills-cross-desc {
+  font-family: 'Breton', sans-serif;
+  font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .skills-contact {
@@ -1170,11 +1263,11 @@ a.chr-hover {
   cursor: pointer;
   text-decoration: none;
   color: inherit;
-  margin-bottom: 3rem;
+  margin-bottom: 1.8rem;
 }
 
 .skills-arrow {
-  font-size: clamp(8rem, 14vw, 12rem);
+  font-size: clamp(6rem, 11vw, 9.5rem);
   color: #9333ea;
   line-height: 1;
   user-select: none;
@@ -1183,15 +1276,24 @@ a.chr-hover {
 }
 
 .skills-right {
-  width: 40%;
-  padding: 15vh 4rem 50vh 2rem;
+  width: 48%;
+  padding: 12vh 5rem 40vh 2rem;
   flex-shrink: 0;
+}
+
+.skill-group {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.skill-group:first-child {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .skill-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1.5rem;
   padding: 1.8rem 0;
   cursor: pointer;
   user-select: none;
@@ -1199,14 +1301,16 @@ a.chr-hover {
 
 .skill-header-title {
   font-family: 'Breton', sans-serif;
-  font-size: clamp(2rem, 2.8vw, 2.6rem);
+  font-size: clamp(1.35rem, 2vw, 1.85rem);
   font-weight: 300;
   letter-spacing: -0.01em;
-  color: #f0f0f0;
+  line-height: 1.25;
+  color: rgba(240, 240, 240, 0.75);
   transition: color 0.3s ease;
 }
 
-.skill-group.open .skill-header-title {
+.skill-group.open .skill-header-title,
+.skill-header:hover .skill-header-title {
   color: #f0f0f0;
 }
 
@@ -1252,15 +1356,45 @@ a.chr-hover {
 
 .skill-body-inner {
   list-style: none;
-  padding: 0 0 1.6rem 0;
+  padding: 0 0 2rem 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.skill-body-inner li {
+.skill-group-desc {
   font-family: 'Breton', sans-serif;
-  font-size: clamp(1rem, 1.3vw, 1.2rem);
-  line-height: 2.2;
-  color: rgba(255, 255, 255, 0.45);
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  line-height: 1.55;
+  color: rgba(240, 240, 240, 0.9);
+}
+
+.skill-group-items {
+  font-family: 'Breton', sans-serif;
+  font-size: clamp(0.92rem, 1.08vw, 1.04rem);
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.skill-group-exploring {
+  margin-top: 0.25rem;
+  padding: 0.75rem 1rem;
+  border-left: 2px solid #a855f7;
+  background: rgba(147, 51, 234, 0.08);
+  font-family: 'Breton', sans-serif;
+  font-size: clamp(0.88rem, 1vw, 0.98rem);
+  line-height: 1.65;
+}
+
+.skill-exploring-label {
+  color: #c084fc;
+  font-weight: 600;
+  margin-right: 0.35rem;
+}
+
+.skill-exploring-items {
+  color: rgba(240, 240, 240, 0.82);
 }
 
 
@@ -1698,7 +1832,8 @@ a.chr-hover {
     width: 100%;
   }
 
-  .about-photo {
+  .about-photo,
+  .about-photo-frame {
     width: 100%;
     border-radius: 140px 140px 0 0;
   }

@@ -19,7 +19,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
   <link rel="preload" href="assets/fonts/Breton.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/Machine.otf" as="font" type="font/otf" crossorigin>
-  <link rel="preload" href="assets/images/hero%20sequence/0001.jpg?v=20260416-r2" as="image" fetchpriority="high">
   <link rel="preload" href="assets/images/profile/me.avif" as="image" fetchpriority="high">
   <link rel="preload" href="assets/images/projects/Covers/cyberDiag_web.avif" as="image" fetchpriority="high">
   <link rel="preload" href="assets/images/projects/Covers/Overtake.avif" as="image" fetchpriority="low">
@@ -64,7 +63,8 @@
         <div class="hero-bar" id="hero-bar">
           <div class="hero-bar-left"></div>
           <nav class="hero-bar-center" aria-label="社交链接">
-            <a class="chr-hover" data-chr="GitHub" href="https://github.com/SkyNigh1" target="_blank" rel="noopener noreferrer" aria-label="GitHub"></a>
+            <a class="chr-hover" data-chr="GitHub" href="https://github.com/Amberspring" target="_blank" rel="noopener noreferrer" aria-label="GitHub"></a>
+            <a class="chr-hover" data-chr="LinkedIn" href="https://www.linkedin.com/in/flora-yeung-b0b872428/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"></a>
           </nav>
           <nav class="hero-bar-right" aria-label="主导航">
             <a class="chr-hover" data-chr="作品" data-i18n-chr="index.nav.work" href="works/index.html" data-page-link="work" aria-label="Work"></a>
@@ -86,7 +86,7 @@
       <span class="reveal-corner br"></span>
     </div>
     <div class="reveal-overlay" id="reveal-overlay"></div>
-    <p class="reveal-phrase" id="reveal-phrase">Basically, I make websites.</p>
+    <p class="reveal-phrase" id="reveal-phrase">优秀的商业需要连接数理、代码、金融与市场</p>
   </div>
 
   
@@ -102,8 +102,19 @@
         <a class="chr-hover" data-chr="关于我" data-i18n-chr="index.nav.info" href="info/index.html" data-page-link="info" aria-label="关于我"></a>
       </div>
       <div class="about-photo-wrap" id="about-photo-wrap">
-        <img class="about-photo" src="assets/images/profile/me.avif" alt="Flora Yeung" decoding="async" width="2500"
-          height="3001">
+        <div class="about-photo-frame" id="about-photo-frame">
+          <div class="about-photo-track" id="about-photo-track">
+            <img class="about-photo-slide" src="assets/images/profile/photo1.jpg" data-fallback="assets/images/profile/me.avif" alt="Flora Yeung 1" decoding="async">
+            <img class="about-photo-slide" src="assets/images/profile/photo2.jpg" data-fallback="assets/images/profile/me.avif" alt="Flora Yeung 2" decoding="async">
+            <img class="about-photo-slide" src="assets/images/profile/photo3.jpg" data-fallback="assets/images/profile/me.avif" alt="Flora Yeung 3" decoding="async">
+            <img class="about-photo-slide" src="assets/images/profile/photo1.jpg" data-fallback="assets/images/profile/me.avif" alt="Flora Yeung 1 Clone" decoding="async" aria-hidden="true">
+          </div>
+          <div class="about-photo-dots" id="about-photo-dots">
+            <span class="about-photo-dot active" data-index="0"></span>
+            <span class="about-photo-dot" data-index="1"></span>
+            <span class="about-photo-dot" data-index="2"></span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -159,11 +170,16 @@
   <section class="skills" id="skills">
     <div class="skills-inner">
       <div class="skills-left">
-        <div class="skills-subtitle" data-i18n="index.skills.subtitle">核心能力</div>
+        <div class="skills-subtitle" data-i18n="index.skills.subtitle">专业技能</div>
+        <div class="skills-heading" data-i18n="index.skills.heading">从模型到产品</div>
         <div class="skills-text" data-i18n="index.skills.text">
-          香港大学计算机科学硕士，同济大学数理金融学士，专注数据挖掘、量化建模与商业战略分析。
+          以金融与数学为基础，结合数据科学、人工智能与软件开发，探索技术如何解决真实问题。
         </div>
         <div class="skills-separator"></div>
+        <div class="skills-cross">
+          <div class="skills-cross-title" data-i18n="index.skills.cross.title">跨学科方法</div>
+          <p class="skills-cross-desc" data-i18n="index.skills.cross.desc">我关注严谨分析、技术实现与创造性解决问题之间的连接。</p>
+        </div>
         <div><a class="skills-contact chr-hover" data-chr="联系方式🞣" data-i18n-chr="index.skills.contactBtn" href="contact/index.html"
             data-page-link="contact" aria-label="联系方式"></a></div>
         <div class="skills-arrow" id="skills-arrow"><svg style="width: 1.25em; height: 1.25em; vertical-align: -0.25em;" viewBox="0 0 84 85" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -171,102 +187,48 @@
 </svg></div>
       </div>
       <div class="skills-right" id="skills-right">
-        <div class="skill-group open" data-group="frontend">
-          <div class="skill-header"><span class="skill-header-title" data-i18n="index.skills.frontend">Frontend</span><span
+        <div class="skill-group open" data-group="ai-ml">
+          <div class="skill-header"><span class="skill-header-title" data-i18n="index.skills.cat1.title">01 / 人工智能与机器学习</span><span
               class="skill-header-icon"></span></div>
           <div class="skill-body">
-            <ul class="skill-body-inner">
-              <li>HTML</li>
-              <li>CSS</li>
-              <li>JavaScript</li>
-              <li>TypeScript</li>
-              <li>React</li>
-              <li>Next.js</li>
-              <li>Tailwind</li>
-              <li>Bootstrap</li>
-              <li>Electron</li>
-            </ul>
+            <div class="skill-body-inner">
+              <p class="skill-group-desc" data-i18n="index.skills.cat1.desc">让复杂数据与自然语言转化为可分析、可验证的智能结果。</p>
+              <div class="skill-group-items" data-i18n="index.skills.cat1.items">机器学习 · 自然语言处理 · Transformer · 大语言模型 · 特征工程 · 模型评估 · 分类与回归 · 聚类分析 · BERTopic · Scikit-learn · XGBoost · PyTorch</div>
+              <div class="skill-group-exploring">
+                <span class="skill-exploring-label" data-i18n="index.skills.cat1.exploringLabel">持续探索：</span>
+                <span class="skill-exploring-items" data-i18n="index.skills.cat1.exploringItems">大模型微调 · SFT · LoRA / QLoRA · 检索增强生成 · 量化推理</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="skill-group" data-group="animation">
-          <div class="skill-header"><span class="skill-header-title" data-i18n="index.skills.animation">Animation & 3D</span><span
+        <div class="skill-group" data-group="data-science">
+          <div class="skill-header"><span class="skill-header-title" data-i18n="index.skills.cat2.title">02 / 数据科学与商业分析</span><span
               class="skill-header-icon"></span></div>
           <div class="skill-body">
-            <ul class="skill-body-inner">
-              <li>GSAP</li>
-              <li>Lenis</li>
-              <li>Barba.js</li>
-              <li>Three.js</li>
-              <li>WebGL</li>
-              <li>Blender</li>
-            </ul>
+            <div class="skill-body-inner">
+              <p class="skill-group-desc" data-i18n="index.skills.cat2.desc">从原始数据到业务洞察，将分析结果转化为可衡量的决策依据。</p>
+              <div class="skill-group-items" data-i18n="index.skills.cat2.items">Python · SQL · Pandas · NumPy · DuckDB · Spark · 数据挖掘 · 统计检验 · 探索性数据分析 · 留存与同期群分析 · RFM 用户分层 · Shapley 归因 · 商业智能 · 数据可视化 · Streamlit · QGIS</div>
+            </div>
           </div>
         </div>
-        <div class="skill-group" data-group="backend">
-          <div class="skill-header"><span class="skill-header-title" data-i18n="index.skills.backend">Backend</span><span
+        <div class="skill-group" data-group="quant-finance">
+          <div class="skill-header"><span class="skill-header-title" data-i18n="index.skills.cat3.title">03 / 量化金融与实证研究</span><span
               class="skill-header-icon"></span></div>
           <div class="skill-body">
-            <ul class="skill-body-inner">
-              <li>Node.js</li>
-              <li>Express.js</li>
-              <li>Python</li>
-              <li>Java</li>
-              <li>PHP</li>
-              <li>Netlify</li>
-            </ul>
+            <div class="skill-body-inner">
+              <p class="skill-group-desc" data-i18n="index.skills.cat3.desc">运用数学、统计与计算方法，研究金融市场、经济行为与不确定性。</p>
+              <div class="skill-group-items" data-i18n="index.skills.cat3.items">数理金融 · 计量经济学 · 时间序列分析 · 金融建模 · 多因子研究 · 市场微观结构 · 限价订单簿分析 · 量化回测 · 风险分析 · 非线性回归 · 假设检验 · Granger 因果检验 · R · Python</div>
+            </div>
           </div>
         </div>
-        <div class="skill-group" data-group="database">
-          <div class="skill-header"><span class="skill-header-title" data-i18n="index.skills.database">数据库与大数据</span><span
+        <div class="skill-group" data-group="software-product">
+          <div class="skill-header"><span class="skill-header-title" data-i18n="index.skills.cat4.title">04 / 软件工程与产品开发</span><span
               class="skill-header-icon"></span></div>
           <div class="skill-body">
-            <ul class="skill-body-inner">
-              <li>MySQL</li>
-              <li>PostgreSQL</li>
-              <li>MongoDB</li>
-              <li>Supabase</li>
-            </ul>
-          </div>
-        </div>
-        <div class="skill-group" data-group="devops">
-          <div class="skill-header"><span class="skill-header-title" data-i18n="index.skills.devops">DevOps & 工具</span><span
-              class="skill-header-icon"></span></div>
-          <div class="skill-body">
-            <ul class="skill-body-inner">
-              <li>Docker</li>
-              <li>Vercel</li>
-              <li>Git</li>
-              <li>GitHub</li>
-              <li>GitLab</li>
-              <li>Cloudflare</li>
-            </ul>
-          </div>
-        </div>
-        <div class="skill-group" data-group="sysadmin">
-          <div class="skill-header"><span class="skill-header-title" data-i18n="index.skills.security">系统与安全</span><span
-              class="skill-header-icon"></span></div>
-          <div class="skill-body">
-            <ul class="skill-body-inner">
-              <li>Linux</li>
-              <li>Bash</li>
-              <li>Shell</li>
-              <li>Owasp</li>
-              <li>Metasploit</li>
-              <li>Nmap</li>
-              <li>OpenVAS</li>
-              <li>Ossec</li>
-            </ul>
-          </div>
-        </div>
-        <div class="skill-group" data-group="design">
-          <div class="skill-header"><span class="skill-header-title" data-i18n="index.skills.design">设计与可视化</span><span
-              class="skill-header-icon"></span></div>
-          <div class="skill-body">
-            <ul class="skill-body-inner">
-              <li>Photoshop</li>
-              <li>Canva</li>
-              <li>Figma</li>
-            </ul>
+            <div class="skill-body-inner">
+              <p class="skill-group-desc" data-i18n="index.skills.cat4.desc">将分析思路转化为可使用、可交互、以人为中心的技术产品。</p>
+              <div class="skill-group-items" data-i18n="index.skills.cat4.items">Python · TypeScript · JavaScript · React · HTML / CSS · SQL · C# · Git &amp; GitHub · API 集成 · 数据库设计 · 数据看板开发 · 交互原型 · 数据驱动产品设计</div>
+            </div>
           </div>
         </div>
       </div>
@@ -349,7 +311,8 @@
 
       <div class="contact-bottom" id="contact-bottom">
         <nav class="contact-socials" id="contact-socials" aria-label="社交链接">
-          <a class="chr-hover" data-chr-contact="GitHub" href="https://github.com/SkyNigh1" target="_blank" rel="noopener noreferrer" aria-label="GitHub"></a>
+          <a class="chr-hover" data-chr-contact="GitHub" href="https://github.com/Amberspring" target="_blank" rel="noopener noreferrer" aria-label="GitHub"></a>
+          <a class="chr-hover" data-chr-contact="LinkedIn" href="https://www.linkedin.com/in/flora-yeung-b0b872428/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"></a>
         </nav>
         <a class="contact-mail" id="contact-mail" href="mailto:yrjzcm@foxmail.com">yrjzcm@foxmail.com</a>
       </div>
@@ -367,7 +330,8 @@
           <span class="chr-hover footer-date" data-chr-footer="© 2026"></span>
         </div>
         <nav class="footer-top-col" aria-label="社交链接">
-          <a class="chr-hover" data-chr-footer="GitHub" href="https://github.com/SkyNigh1" target="_blank" rel="noopener noreferrer" aria-label="GitHub"></a>
+          <a class="chr-hover" data-chr-footer="GitHub" href="https://github.com/Amberspring" target="_blank" rel="noopener noreferrer" aria-label="GitHub"></a>
+          <a class="chr-hover" data-chr-footer="LinkedIn" href="https://www.linkedin.com/in/flora-yeung-b0b872428/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"></a>
         </nav>
         <nav class="footer-top-col" aria-label="页脚导航">
           <a class="chr-hover" data-chr-footer="作品" data-i18n-attr="data-chr-footer:index.nav.work" href="works/index.html" data-page-link="work" aria-label="Work"></a>
@@ -436,7 +400,6 @@
   <script defer src="/js/index.js?v=20260423-r14"></script>
   <script type="module" src="/src/main.tsx"></script>
 
-  <div class="scroll-pct" id="scroll-pct">(0)</div>
   <div class="scroll-timeline" id="scroll-timeline">
     <span class="st-label" id="st-label"></span>
     <div class="st-bar" id="st-bar"></div>

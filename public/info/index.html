@@ -40,8 +40,18 @@
   <main class="info-main" id="info-main">
 
     <section class="info-left">
-      <div class="info-photo-wrap">
-        <img class="info-photo" src="assets/images/profile/me.avif" alt="Flora Yeung" decoding="async">
+      <div class="info-photo-wrap" id="info-photo-wrap">
+        <div class="info-photo-track" id="info-photo-track">
+          <img class="info-photo-slide" src="assets/images/profile/photo1.jpg" data-fallback="assets/images/profile/me.avif" alt="Flora Yeung 1" decoding="async">
+          <img class="info-photo-slide" src="assets/images/profile/photo2.jpg" data-fallback="assets/images/profile/me.avif" alt="Flora Yeung 2" decoding="async">
+          <img class="info-photo-slide" src="assets/images/profile/photo3.jpg" data-fallback="assets/images/profile/me.avif" alt="Flora Yeung 3" decoding="async">
+          <img class="info-photo-slide" src="assets/images/profile/photo1.jpg" data-fallback="assets/images/profile/me.avif" alt="Flora Yeung 1 Clone" decoding="async" aria-hidden="true">
+        </div>
+        <div class="info-photo-dots" id="info-photo-dots">
+          <span class="info-photo-dot active" data-index="0"></span>
+          <span class="info-photo-dot" data-index="1"></span>
+          <span class="info-photo-dot" data-index="2"></span>
+        </div>
         <span class="frame-corner tl"></span>
         <span class="frame-corner tr"></span>
         <span class="frame-corner bl"></span>
