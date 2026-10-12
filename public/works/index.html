@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-i18n-title="works.title">
+<head>
+  <meta charset="UTF-8">
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作品 — Flora Yeung</title>
+  <meta name="description" content="杨蕊嘉 (Flora Yeung) — 从同济数理金融到港大计算机科学，非垂直的野蛮生长路径，兼具商业思维 × 技术能力。">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="作品 — Flora Yeung">
+  <meta property="og:description" content="杨蕊嘉 (Flora Yeung) — 从同济数理金融到港大计算机科学，非垂直的野蛮生长路径，兼具商业思维 × 技术能力。">
+  <meta property="og:image" content="/assets/images/cover/cover.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="/assets/images/cover/cover.jpg">
+  <meta name="author" content="Flora Yeung">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+  <link rel="preload" href="assets/fonts/Breton.woff2" as="font" type="font/otf" crossorigin>
+  <link rel="preload" href="assets/fonts/Machine.otf" as="font" type="font/otf" crossorigin>
+  <link rel="stylesheet" href="styles/works.css">
+</head>
+<body>
+
+  <div class="intro-overlay" id="intro-overlay"></div>
+  <div class="page-title" id="page-title" data-i18n="works.pageTitle">作品</div>
+
+  <h1 class="sr-only" data-i18n="works.h1">项目作品 — 杨蕊嘉 (Flora Yeung)，涵盖量化金融、LLM 文本计量、电商增长与全栈开发。</h1>
+
+  <a class="back-btn" id="back-btn" href="index.html" aria-label="返回首页">
+    <span class="chr-hover" data-chr="返回" data-i18n-chr="common.back"></span>
+  </a>
+
+  <div class="scroll-hint" id="scroll-hint">Scroll to explore</div>
+
+  <div class="scroll-chevron" id="scroll-chevron">
+    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+
+  <canvas class="ruler" id="ruler-left"></canvas>
+  <canvas class="ruler" id="ruler-right"></canvas>
+  <div class="counter-wrap" id="counter-wrap">
+    <div class="counter-window">
+      <div class="counter-strip" id="counter-strip"></div>
+    </div>
+  </div>
+
+  <div class="cube-viewport" id="cube-viewport">
+    <div class="cube-scene">
+      <div class="cube" id="cube">
+        <div class="cube-face" data-face="0"></div>
+        <div class="cube-face" data-face="1"></div>
+        <div class="cube-face" data-face="2"></div>
+        <div class="cube-face" data-face="3"></div>
+      </div>
+    </div>
+  </div>
+
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/vendor/gsap.min.js"></script>
+  <script defer src="js/works.js"></script>
+</body>
+</html>

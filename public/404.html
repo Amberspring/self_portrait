@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr" data-i18n-title="404.title">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Luke Baffait</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/x-icon" href="assets/favicon/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+  <link rel="preload" href="assets/fonts/Breton.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/Machine.otf" as="font" type="font/otf" crossorigin>
+  <link rel="stylesheet" href="styles/404.css">
+</head>
+<body>
+
+  <canvas id="noise-canvas"></canvas>
+
+  <div class="fc tl"></div>
+  <div class="fc tr"></div>
+  <div class="fc bl"></div>
+  <div class="fc br"></div>
+
+  <div class="error-label" id="error-label">// NOT_FOUND</div>
+
+  <a class="back-btn" id="back-btn" href="index.html" aria-label="Retour à l'accueil" data-i18n-attr="aria-label:404.aria.back">
+    <span class="chr-hover" data-chr="Back"></span>
+  </a>
+
+  <main class="scene" id="scene">
+    <div class="digits-wrap" id="digits-wrap">
+
+      <div class="digit-layer" id="d1">
+        <span class="digit-char" id="d1-char">4</span>
+      </div>
+
+      <div class="digit-layer" id="d0">
+        <div class="zero-wrap" id="zero-wrap">
+          <span class="digit-char" id="d0-char">0</span>
+          <div class="orbit-ring" id="orbit-ring"></div>
+          <div class="satellite" id="satellite"></div>
+        </div>
+      </div>
+
+      <div class="digit-layer" id="d2">
+        <span class="digit-char" id="d2-char">4</span>
+      </div>
+
+    </div>
+
+    <p class="subtitle" id="subtitle" data-i18n="404.subtitle">
+      Cette page s'est égarée dans le vide.<br>
+      <span class="subtitle-dim">Elle n'existe pas, ou n'existe plus.</span>
+    </p>
+  </main>
+
+  <div class="hud-data" id="hud-data">
+    <div class="hud-row">
+      <span class="hud-key">ERR</span>
+      <span class="hud-val red" id="hud-err">0x404</span>
+    </div>
+    <div class="hud-row">
+      <span class="hud-key">X</span>
+      <span class="hud-val" id="hud-x">——</span>
+    </div>
+    <div class="hud-row">
+      <span class="hud-key">Y</span>
+      <span class="hud-val" id="hud-y">——</span>
+    </div>
+    <div class="hud-row">
+      <span class="hud-key">SIGNAL</span>
+      <div class="signal-bars">
+        <div class="signal-bar"></div>
+        <div class="signal-bar"></div>
+        <div class="signal-bar"></div>
+        <div class="signal-bar"></div>
+        <div class="signal-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ticker-wrap" id="ticker-wrap">
+    <div class="ticker-inner">
+      <span class="ticker-text" data-i18n="404.ticker">— PAGE NOT FOUND — SIGNAL LOST — ERROR 0x404 — LA PAGE N'EXISTE PAS — COORDINATES: NULL — DESTINATION INCONNUE — </span>
+      <span class="ticker-text" aria-hidden="true" data-i18n="404.ticker">— PAGE NOT FOUND — SIGNAL LOST — ERROR 0x404 — LA PAGE N'EXISTE PAS — COORDINATES: NULL — DESTINATION INCONNUE — </span>
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/404.js"></script>
+
+</body>
+</html>
