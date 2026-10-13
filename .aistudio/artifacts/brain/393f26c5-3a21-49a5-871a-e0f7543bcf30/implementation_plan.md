@@ -1,73 +1,23 @@
-# 滚轮过渡导入语与暗紫流光量化数据矩阵动画方案
+# 滚动过渡区域 CrystalizedBall（Nebula 星云紫水晶球）背景集成方案
 
-将首屏向下滚动时的过渡导入语（原 `"Basically, I make websites."`）升级为契合您复合背景的 **「优秀的商业需要连接数理、代码、金融与市场」**（支持中英双语切换），并将原本的电脑桌序列帧替换为 **随滚轮推进演算的暗紫流光数据矩阵与量化波纹动态 Canvas**。
+将您提供的 `CrystalizedBall` WebGL2 粒子与电弧能量球着色器组件，以 **`nebula`（星云紫 `#9478FF`）** 预设应用到首屏向下滚动时的过渡区域（显示 **「优秀的商业需要连接数理、代码、金融与市场」** 的背景）。
 
-## User Review & Critical Decisions
+## 核心视觉与交互设计
 
-> [!IMPORTANT]
-> 以下为您已确认的核心设计决策，确认无误后点击 **Proceed** 即可立即为您编码实现：
+1. **预设与色彩匹配 (`preset="nebula"`)**
+   - **主色调**：`#9478FF`（星云紫），与全站暗紫视觉体系无缝融合。
+   - **核心参数**：`strands: 6`（6 束高频谐波能量流）、`crackle: 1.0`（电弧裂变感）、`flares: 0.5`、`glow: 0.9`、`sparks: 0.6`、`particleCount: 18000`（18,000 颗悬浮微尘粒子）、`fill: 0.45`、`motion: 'rise'`（微尘向上升腾）、`particleShape: 'square'`、`depth: 0.5`、`sway: 0.4`、`twinkle: 0.6`、`haze: 0.8`、`dustSpeed: 1.2`。
+   - **深邃背景衬底**：球体周围衬以纯黑 `#000000` 背景，确保中央过渡导入语 **「优秀的商业需要连接数理、代码、金融与市场 / Great business bridges math, code, finance, and markets.」** 保持极高对比度与清晰度。
 
-- **确认决策 1 — 过渡导入语（支持中英双语实时切换）**：
-  - **中文**：`优秀的商业需要连接数理、代码、金融与市场`
-  - **英文**：`Great business bridges math, code, finance, and markets.`
-  - **动效保留**：完整保留原版逐字符（`.rp-char`）随滚轮从高斯模糊渐显、并在离开过渡区时逐字消散的丝滑节奏。
-- **确认决策 2 — 过渡背景视觉（暗紫流光数据矩阵 / 量化波纹动态 Canvas）**：
-  - 替换原 Luke 电脑桌 341 张序列帧，在 `#reveal-canvas` 上构建实时 GPU/Canvas 2D 数学与量化可视化演算引擎，随滚动进度（`progress: 0 → 1`）推进镜头景深与波纹频率。
+2. **滚轮推进与鼠标实时交互**
+   - **滚轮联动**：当从首屏向下滚动进入过渡区时，`#reveal-image-wrap` 随滚轮从中心放大展开，同時驱动 `CrystalizedBall` 的展开进度（`intro` 能量充能、电弧脉冲与微尘升腾）。
+   - **鼠标与点击交互**：支持全屏指针追踪（`window` 级 `pointermove` / `pointerdown`），鼠标掠过球体边缘时触发局部热力电弧与内部 18,000 颗星云微尘的流体扰动（Stirring），点击球体区域可激发额外的闪电电弧（Sparks & Arcs）。
 
----
+## 涉及修改的文件
 
-## 1. Overview & Core Concept
-
-- **功能定位**：作为从首屏 `Flora Yeung.` 巨幅流体紫视觉向「关于我」与「项目经历」过渡的核心视觉锚点（Scroll-Scrubbed Reveal Frame）。
-- **核心价值**：消除原站纯前端网页开发者的个人桌面元素，用兼具**数理秩序感、高频金融脉冲与代码矩阵**的暗紫流光视觉，直观传递「同济数理金融 × 港大计算机科学」的跨界基因。
-
----
-
-## 2. User Experience & Visual Design
-
-- **滚动交互流（Scroll-Scrubbed Choreography）**：
-  1. **展开阶段（Scroll 30% → 100%）**：随着 `Flora` 与 `Yeung.` 向左右两侧拉开，中心取景框（带四角十字准星 `.reveal-corner`）由中心放大展开至全屏。
-  2. **演算推进阶段**：画布中的暗紫量化曲面波纹、三维透视数据网格与微光数学/金融字符流随滚轮幅度加速演算与拉近景深，同时中心浮现逐字去模糊的导入语：**「优秀的商业需要连接数理、代码、金融与市场」**。
-  3. **离场阶段（进入 About 区块）**：取景框随滚轮向上视差滑出并叠加毛玻璃暗化遮罩，无缝衔接到下方「从数理金融到计算机科学」个人介绍与 3 张照片轮播。
-
-- **视觉风格与色彩体系**：
-  - **背景基调**：深邃暗曜黑（`#07050d` → `#0a0a0a`）径向暗角，确保中心白色文字极高对比度与可读性。
-  - **主视觉色板**：流光紫（`#9333ea`）、电光紫（`#a855f7`）、柔薰衣草紫（`#c084fc`）与极细微的冷白高光粒子（`rgba(240, 240, 255, 0.75)`）。
-  - **三重视觉图层**：
-    1. **底层 — 3D 透视量化波纹场（Quantitative Harmonic Wave Grid）**：多频正弦/余弦干涉构成的丝滑等高线波浪网格，随滚动改变相位、振幅与透视倾角。
-    2. **中层 — 高频脉冲与数理节点网络（Order-Book & Neural Nodes）**：沿波峰流动的紫色能量脉冲轨迹与拓扑连接线。
-    3. **表层 — 景深数据矩阵粒子流（Data Matrix Stream）**：轻微漂浮的数理金融与算法符号微粒（如 `∑`, `∂`, `α`, `λ`, `01`, `LOB`, `∇`），随滚动进度产生镜头向前穿梭的 Z 轴视差。
-
----
-
-## 3. Key Product Decisions & Trade-Offs
-
-- **决策 1：采用实时程序化 Canvas 渲染替代 341 张静态 JPG 序列帧**
-  - *方案优势*：零网络请求等待（首屏无需下载数十 MB 的序列帧图片），在任何分辨率下均保持 Retina 级锐利度，同时在用户停留不滚动时也能保持极细腻的呼吸感微动效，滚动时则产生强烈的穿梭推进感。
-- **决策 2：中英文切换联动重排 `.rp-char` 字符动画**
-  - *方案优势*：当点击右上角 `中 / EN` 按钮时，自动重新拆分导入语字符并同步当前 ScrollTrigger 的滚动进度状态，保证无论在滚动到哪一位置切换语言，文字都不会消失或错位。
-
----
-
-## 4. Technical Architecture & Data Strategy
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                     ScrollTrigger (#scroll-wrap)                │
-│         scrub: 0.5  ───►  progress (0.00 -> 1.00)               │
-└───────────────┬─────────────────────────────────┬───────────────┘
-                │                                 │
-                ▼                                 ▼
-┌───────────────────────────────┐ ┌───────────────────────────────┐
-│   Reveal Canvas Engine (2D)   │ │   Reveal Phrase Typography    │
-│  - 3D Perspective Wave Grid   │ │  - ZH: 优秀的商业需要连接...   │
-│  - Quant/Math Matrix Symbols  │ │  - EN: Great business...      │
-│  - Scroll Progress + Idle RAF │ │  - Per-char blur/opacity      │
-│  - Purple Glow (#a855f7)      │ │  - Live i18n rebuild hook     │
-└───────────────────────────────┘ └───────────────────────────────┘
-```
-
-- **状态与交互映射**：
-  - `scrollProgress`（由 `#scroll-wrap` 与 `#section-after` 的 `ScrollTrigger` 共同驱动 `0 → 1`）：控制三维网格的前进速度、波峰干涉强度与粒子 Z 轴穿梭深度。
-  - `ambientTime`（轻量级 `requestAnimationFrame`，仅在画布可见区域内运行）：赋予波纹与数据流柔和的持续生命力，离开视口自动暂停以节省 GPU/CPU。
-  - `i18n` 钩子：在语言字典中注册 `index.reveal.phrase`，切换语言时动态重建 `.rp-char` 节点并立即对齐当前滚动时间轴进度。
+1. **`src/CrystalizedBall.tsx` & `src/CrystalizedBall.css`**
+   - 将您提供的 React + OGL 组件保存并转换为 TypeScript 组件，同时在 `src/main.tsx` 中挂载到过渡区域的容器，确保 `ogl` 渲染管线（Float/Half-Float 多重渲染目标 MRT、粒子物理扰动与电弧合成）原汁原味运行。
+2. **`index.html` & `public/styles/index.css`**
+   - 在 `#reveal-image-wrap` 内设置 `#reveal-crystal-ball` 容器（带 `reveal-image reveal-seq` 缩放类名与 `#000` 纯黑底色），保持原有的四角取景框 `.reveal-frame`、遮罩 `.reveal-overlay` 与中英双语导入语 `#reveal-phrase` 层级不变。
+3. **`public/js/index.js`**
+   - 移除旧的 2D 网格矩阵 Canvas 绘制逻辑，保留 GSAP `ScrollTrigger` 对 `.reveal-seq` 缩放、`#reveal-phrase` 逐字高斯模糊浮现/消散以及中英双语实时切换的控制。

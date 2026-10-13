@@ -1,6 +1,6 @@
 {
-  "summary":  "Implementation plan for replacing the scroll-reveal transition phrase with \"优秀的商业需要连接数理、代码、金融与市场\" (bilingual ZH/EN) and upgrading the background reveal canvas to a dark-purple streaming data matrix and quantitative ripple simulation driven by scroll progress.",
-  "updatedAt":  "2026-10-12T08:17:59.459842902Z",
+  "summary":  "Implementation plan for integrating the CrystalizedBall WebGL2 shader animation (preset=\"nebula\", #9478FF) into the scroll-reveal transition background behind the phrase \"优秀的商业需要连接数理、代码、金融与市场\".",
+  "updatedAt":  "2026-10-12T10:48:13.459550952Z",
   "requestFeedback":  true,
   "userFacing":  true
 }

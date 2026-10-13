@@ -455,10 +455,7 @@ async function setupScrollReveal() {
 
   const revealWrap = document.getElementById('reveal-image-wrap');
   const revealSeq = document.querySelectorAll('.reveal-seq');
-  const canvas = document.getElementById('reveal-canvas');
-  const ctx = canvas.getContext('2d');
 
-  
   const phraseEl = document.getElementById('reveal-phrase');
   let phraseChars = [];
   let scrollTlRef = null;
@@ -476,258 +473,6 @@ async function setupScrollReveal() {
   }
 
   splitRevealPhraseText(window.__t ? window.__t('index.reveal.phrase') : phraseEl.textContent);
-
-  // Dark-Purple Streaming Data Matrix & Quantitative Wave Canvas Engine
-  canvas.style.willChange = 'transform';
-  let currentScrollProgress = 0;
-  let ambientPhase = 0;
-  let isRevealVisible = true;
-
-  const MATRIX_TOKENS = [
-    '∑', '∂', '∇', 'α', 'β', 'λ', 'σ²', 'μ', '∫', 'Δ',
-    'LOB', '01', '10', 'E[X]', 'P(A|B)', 'f(x)', 'O(n)', 'dW_t', 'VaR', 'Sharpe'
-  ];
-  const PARTICLE_COUNT = isMobile ? 38 : 76;
-  const matrixParticles = Array.from({ length: PARTICLE_COUNT }, (_, i) => {
-    const angle = (i / PARTICLE_COUNT) * Math.PI * 2 + (i * 1.618);
-    const radius = 0.08 + ((i * 73) % 100) / 100 * 0.65;
-    return {
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius * 0.72,
-      z: ((i * 37) % 100) / 100,
-      speed: 0.25 + ((i * 19) % 100) / 100 * 0.55,
-      token: MATRIX_TOKENS[i % MATRIX_TOKENS.length],
-      phase: i * 0.9,
-      isNode: i % 3 === 0,
-    };
-  });
-
-  function resizeCanvas() {
-    const dpr = isSlowHardware ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
-    canvas.width = Math.round(window.innerWidth * dpr);
-    canvas.height = Math.round(window.innerHeight * dpr);
-    renderQuantMatrixCanvas(currentScrollProgress, ambientPhase);
-  }
-
-  function renderQuantMatrixCanvas(progress, timeSec) {
-    const cw = canvas.width;
-    const ch = canvas.height;
-    if (!cw || !ch) return;
-
-    const p = Math.min(1, Math.max(0, progress));
-    const cx = cw * 0.5;
-    const cy = ch * 0.5;
-    const minDim = Math.min(cw, ch);
-
-    // 1. Deep obsidian-violet radial atmosphere
-    ctx.clearRect(0, 0, cw, ch);
-    const bgGrad = ctx.createRadialGradient(
-      cx, cy * (1 - p * 0.12), minDim * 0.04,
-      cx, cy, Math.max(cw, ch) * 0.78
-    );
-    bgGrad.addColorStop(0, `rgba(58, 18, 105, ${0.52 + p * 0.22})`);
-    bgGrad.addColorStop(0.42, `rgba(24, 9, 48, ${0.85 + p * 0.1})`);
-    bgGrad.addColorStop(0.78, '#090512');
-    bgGrad.addColorStop(1, '#050308');
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, cw, ch);
-
-    // Secondary glowing nebula core shifting with scroll
-    const coreGrad = ctx.createRadialGradient(
-      cx + Math.sin(timeSec * 0.6 + p * 3) * cw * 0.12,
-      cy + Math.cos(timeSec * 0.4 + p * 2.5) * ch * 0.08,
-      0,
-      cx,
-      cy,
-      minDim * (0.42 + p * 0.18)
-    );
-    coreGrad.addColorStop(0, 'rgba(168, 85, 247, 0.24)');
-    coreGrad.addColorStop(0.5, 'rgba(147, 51, 234, 0.08)');
-    coreGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = coreGrad;
-    ctx.fillRect(0, 0, cw, ch);
-
-    // 2. Quantitative Harmonic 3D Wave Surface (Upper & Lower Horizon)
-    const rows = isMobile ? 16 : 26;
-    const cols = isMobile ? 36 : 64;
-    const phaseShift = timeSec * 1.15 + p * 8.5;
-    const fov = minDim * (0.75 + p * 0.35);
-    const camY = -minDim * (0.16 - p * 0.06);
-
-    function project3D(nx, ny, nz) {
-      const zDist = nz + 1.35;
-      const scale = fov / Math.max(0.18, zDist);
-      return {
-        x: cx + nx * scale,
-        y: cy + (ny - camY / fov) * scale,
-        scale,
-        zDist,
-      };
-    }
-
-    const gridPoints = [];
-    for (let r = 0; r < rows; r++) {
-      const rowArr = [];
-      const rz = ((r / (rows - 1)) * 2.2 - ((p * 1.6 + timeSec * 0.18) % (2.2 / rows)));
-      const depthNorm = r / (rows - 1);
-      for (let c = 0; c < cols; c++) {
-        const u = (c / (cols - 1)) * 2 - 1; // -1 to 1
-        const nx = u * 2.1;
-        const distCenter = Math.sqrt(u * u + (depthNorm - 0.45) * (depthNorm - 0.45));
-        // Quantitative harmonic wave interference (simulating volatility surface / order book depth)
-        const wave1 = Math.sin(distCenter * 7.5 - phaseShift) * Math.cos(u * 3.2 + phaseShift * 0.4);
-        const wave2 = Math.sin(u * 6.0 - depthNorm * 5.0 + phaseShift * 0.7) * 0.45;
-        const amp = (0.11 + p * 0.09) * (1 - depthNorm * 0.35);
-        const ny = 0.36 + (wave1 + wave2) * amp;
-        const pt = project3D(nx, ny, depthNorm * 2.1);
-        pt.waveVal = wave1 + wave2;
-        pt.depthNorm = depthNorm;
-        pt.u = u;
-        rowArr.push(pt);
-      }
-      gridPoints.push(rowArr);
-    }
-
-    // Draw horizontal harmonic wave contours
-    ctx.save();
-    for (let r = 0; r < rows; r++) {
-      const rowArr = gridPoints[r];
-      const depthAlpha = Math.sin((1 - rowArr[0].depthNorm) * Math.PI) * 0.68;
-      if (depthAlpha <= 0.02) continue;
-
-      ctx.beginPath();
-      for (let c = 0; c < cols; c++) {
-        const pt = rowArr[c];
-        if (c === 0) ctx.moveTo(pt.x, pt.y);
-        else ctx.lineTo(pt.x, pt.y);
-      }
-      const isHighlightRow = (r + Math.floor(p * 12)) % 4 === 0;
-      ctx.strokeStyle = isHighlightRow
-        ? `rgba(192, 132, 252, ${depthAlpha * 0.85})`
-        : `rgba(147, 51, 234, ${depthAlpha * 0.48})`;
-      ctx.lineWidth = isHighlightRow ? 1.5 : 0.9;
-      ctx.stroke();
-    }
-
-    // Draw longitudinalmeridian lines for 3D tensor grid feel
-    const colStep = isMobile ? 3 : 4;
-    for (let c = 0; c < cols; c += colStep) {
-      ctx.beginPath();
-      for (let r = 0; r < rows; r++) {
-        const pt = gridPoints[r][c];
-        if (r === 0) ctx.moveTo(pt.x, pt.y);
-        else ctx.lineTo(pt.x, pt.y);
-      }
-      const edgeFade = 1 - Math.abs((c / (cols - 1)) * 2 - 1) * 0.75;
-      ctx.strokeStyle = `rgba(168, 85, 247, ${0.16 * edgeFade})`;
-      ctx.lineWidth = 0.75;
-      ctx.stroke();
-    }
-    ctx.restore();
-
-    // 3. Upper Mirrored Quantitative Ripple Rings (Concentric Data Interferometry)
-    ctx.save();
-    const ringCount = isMobile ? 5 : 8;
-    for (let k = 0; k < ringCount; k++) {
-      const ringProgress = ((k / ringCount) + p * 0.85 + timeSec * 0.06) % 1;
-      const rx = minDim * (0.12 + ringProgress * 0.65);
-      const ry = rx * (0.38 + 0.15 * Math.sin(p * Math.PI));
-      const ringAlpha = Math.sin(ringProgress * Math.PI) * 0.24;
-      ctx.beginPath();
-      ctx.ellipse(cx, cy, rx, ry, p * 0.35 + k * 0.08, 0, Math.PI * 2);
-      ctx.strokeStyle = k % 2 === 0
-        ? `rgba(192, 132, 252, ${ringAlpha})`
-        : `rgba(147, 51, 234, ${ringAlpha * 0.8})`;
-      ctx.lineWidth = 1;
-      ctx.stroke();
-    }
-    ctx.restore();
-
-    // 4. Streaming Data Matrix & Mathematical/Financial Symbols in 3D Z-space
-    ctx.save();
-    const fontSizeBase = Math.max(10, Math.round(minDim * 0.016));
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-
-    const projectedNodes = [];
-    for (let i = 0; i < matrixParticles.length; i++) {
-      const mp = matrixParticles[i];
-      // Z moves toward viewer as scroll progress and ambient time advance
-      let z = (mp.z - (p * 1.35 * mp.speed + timeSec * 0.045 * mp.speed)) % 1;
-      if (z < 0) z += 1;
-
-      const perspective = 1 / (0.22 + z * 1.15);
-      const px = cx + mp.x * cw * 0.46 * perspective;
-      const py = cy + mp.y * ch * 0.46 * perspective;
-
-      if (px < -40 || px > cw + 40 || py < -40 || py > ch + 40) continue;
-
-      const alpha = Math.sin((1 - z) * Math.PI) * (0.35 + p * 0.45);
-      if (alpha <= 0.04) continue;
-
-      if (mp.isNode) {
-        projectedNodes.push({ x: px, y: py, alpha, z });
-      }
-
-      const size = Math.max(9, Math.min(24, Math.round(fontSizeBase * perspective * 0.55)));
-      ctx.font = `600 ${size}px "Inter", monospace`;
-      ctx.fillStyle = z < 0.38
-        ? `rgba(233, 213, 255, ${alpha * 0.9})`
-        : `rgba(168, 85, 247, ${alpha * 0.7})`;
-      ctx.fillText(mp.token, px, py);
-    }
-
-    // Connect nearby data nodes with subtle topological links
-    const maxDistSq = (minDim * 0.16) * (minDim * 0.16);
-    ctx.lineWidth = 0.8;
-    for (let i = 0; i < projectedNodes.length; i++) {
-      const a = projectedNodes[i];
-      for (let j = i + 1; j < projectedNodes.length; j++) {
-        const b = projectedNodes[j];
-        const dx = a.x - b.x;
-        const dy = a.y - b.y;
-        const dSq = dx * dx + dy * dy;
-        if (dSq < maxDistSq) {
-          const linkAlpha = (1 - dSq / maxDistSq) * Math.min(a.alpha, b.alpha) * 0.42;
-          ctx.strokeStyle = `rgba(192, 132, 252, ${linkAlpha})`;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
-        }
-      }
-    }
-    ctx.restore();
-
-    // 5. Central Vignette for crisp typography legibility
-    const textProtectGrad = ctx.createRadialGradient(cx, cy, minDim * 0.05, cx, cy, minDim * 0.55);
-    textProtectGrad.addColorStop(0, 'rgba(8, 4, 15, 0.42)');
-    textProtectGrad.addColorStop(0.6, 'rgba(8, 4, 15, 0.15)');
-    textProtectGrad.addColorStop(1, 'rgba(5, 3, 8, 0.55)');
-    ctx.fillStyle = textProtectGrad;
-    ctx.fillRect(0, 0, cw, ch);
-  }
-
-  function drawFrameAtProgress(progress) {
-    currentScrollProgress = Math.min(1, Math.max(0, progress));
-    renderQuantMatrixCanvas(currentScrollProgress, ambientPhase);
-  }
-
-  // Subtle ambient animation loop when reveal section is near viewport
-  let lastRafTime = performance.now();
-  function tickAmbientReveal(now) {
-    const dt = Math.min(0.05, (now - lastRafTime) * 0.001);
-    lastRafTime = now;
-    if (isRevealVisible && !document.hidden) {
-      ambientPhase += dt;
-      renderQuantMatrixCanvas(currentScrollProgress, ambientPhase);
-    }
-    requestAnimationFrame(tickAmbientReveal);
-  }
-
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-  requestAnimationFrame(tickAmbientReveal);
 
   const introSettledY = Number(gsap.getProperty(pContent, 'y')) || 0;
   const introXvw = `${_introSettledXvw}vw`;
@@ -767,8 +512,6 @@ async function setupScrollReveal() {
   }, 0.62, 'phraseReveal');
 
   const REVEAL_PHASE_START = 0.3;
-  const REVEAL_PHASE_DURATION = 0.7;
-  const FRAME_PROGRESS_AT_EXIT_START = 0.82;
 
   scrollStRef = ScrollTrigger.create({
     trigger: '#scroll-wrap',
@@ -778,16 +521,16 @@ async function setupScrollReveal() {
     animation: scrollTl,
     onUpdate: (self) => {
       const p = self.progress;
-      isRevealVisible = p >= 0.15;
       if (keepIntroNameAnchored && p > 0.001) {
         stopIntroNameAnchor();
       }
-      if (p < REVEAL_PHASE_START) {
-        drawFrameAtProgress(0);
-        return;
+      if (revealWrap) {
+        if (p >= REVEAL_PHASE_START && p < 0.99) {
+          revealWrap.classList.add('is-active');
+        } else {
+          revealWrap.classList.remove('is-active');
+        }
       }
-      const phase2 = Math.min(1, Math.max(0, (p - REVEAL_PHASE_START) / REVEAL_PHASE_DURATION));
-      drawFrameAtProgress(phase2 * FRAME_PROGRESS_AT_EXIT_START);
     },
   });
 
@@ -825,18 +568,21 @@ async function setupScrollReveal() {
     scrub: true,
     animation: exitTl,
     onUpdate: (self) => {
-      isRevealVisible = self.progress < 0.99;
-      const exitFrameProgress = FRAME_PROGRESS_AT_EXIT_START + (self.progress * (1 - FRAME_PROGRESS_AT_EXIT_START));
-      drawFrameAtProgress(exitFrameProgress);
+      if (revealWrap) {
+        if (self.progress >= 0.85) {
+          revealWrap.classList.remove('is-active');
+        } else {
+          revealWrap.classList.add('is-active');
+        }
+      }
     },
     onLeave: () => {
-      isRevealVisible = false;
-      drawFrameAtProgress(1);
+      if (revealWrap) revealWrap.classList.remove('is-active');
     },
     onEnterBack: () => {
-      isRevealVisible = true;
+      if (revealWrap) revealWrap.classList.add('is-active');
     },
-    onLeaveBack: () => drawFrameAtProgress(FRAME_PROGRESS_AT_EXIT_START),
+    onLeaveBack: () => {},
   });
 
   // Live rebuild hook when switching ZH / EN so reveal-phrase updates cleanly at current scroll position
@@ -882,8 +628,195 @@ async function setupScrollReveal() {
     });
   };
 
+  initRevealWavesCanvas();
   setupAboutSection();
 }
+
+function initRevealWavesCanvas() {
+  const canvas = document.getElementById('reveal-canvas');
+  if (!canvas) return;
+  if (canvas._wavesInitialized) return;
+  canvas._wavesInitialized = true;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+  let rafId = null;
+
+  // Curated fragmented code, quant & math tokens (short, clean words/symbols)
+  const TOKENS_POOL = [
+    "LOB", "P(A|B)", "σ²", "μ", "α", "λ", "Sharpe", "E[X]", "VaR", "O(n)",
+    "01", "10", "∂", "dW_t", "f(x)", "Δ", "Σ", "β", "CAPM", "Kelly",
+    "dX_t", "μ dt", "SVD", "det(A)", "∇ℒ", "def", "Loss", "ReLU", "Tensor",
+    "VWAP", "Arbitrage", "GARCH", "return", "import", "class", "void", "true",
+    "const", "let", "fit", "yield"
+  ];
+
+  // Particles drifting OUT from the background toward the viewer
+  const PARTICLE_COUNT = 48;
+  let particles = [];
+
+  function spawnParticle(p, isInitial) {
+    p.text = TOKENS_POOL[Math.floor(Math.random() * TOKENS_POOL.length)];
+    // z ranges from 1.0 (far background) to 0.0 (near viewer)
+    p.z = isInitial ? Math.random() : 1.0;
+    // Slow, calm, steady natural drift speed
+    p.speed = 0.0006 + Math.random() * 0.0007;
+
+    // Perspective angle and radial spread from background center
+    const angle = Math.random() * Math.PI * 2;
+    const spread = 0.25 + Math.random() * 0.75;
+    p.dirX = Math.cos(angle) * spread;
+    p.dirY = Math.sin(angle) * spread * 0.75;
+
+    // Restrained, compact original font base size (11-13px)
+    p.baseSize = 11 + (Math.random() > 0.6 ? 1 : 0);
+    p.maxAlpha = 0.45 + Math.random() * 0.25;
+  }
+
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const p = {};
+      spawnParticle(p, true);
+      particles.push(p);
+    }
+  }
+
+  function resize() {
+    width = window.innerWidth || document.documentElement.clientWidth || 1200;
+    height = window.innerHeight || document.documentElement.clientHeight || 800;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    if (!particles.length) {
+      initParticles();
+    }
+  }
+
+  let time = 0;
+
+  function draw() {
+    time += 0.016;
+
+    ctx.save();
+    ctx.scale(dpr, dpr);
+
+    // ----------------------------------------------------
+    // 1. Deep Purple Ambient Vignette Background
+    // ----------------------------------------------------
+    const bgGrad = ctx.createRadialGradient(
+      width * 0.50, height * 0.44, 40,
+      width * 0.50, height * 0.48, Math.max(width, height) * 0.85
+    );
+    bgGrad.addColorStop(0, '#2b0c48');
+    bgGrad.addColorStop(0.38, '#1b0830');
+    bgGrad.addColorStop(0.72, '#0c0218');
+    bgGrad.addColorStop(1, '#040108');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, width, height);
+
+    // Center focal point
+    const cx = width * 0.50;
+    const cy = height * 0.44;
+
+    // ----------------------------------------------------
+    // 2. Concentric Wave Rings (原本向外扩散的环形波纹)
+    // ----------------------------------------------------
+    // Clean, rhythmic concentric rings expanding smoothly from center outward
+    const RIPPLE_COUNT = 9;
+    const maxR = Math.max(width, height) * 0.95;
+    const rippleSpeed = 0.045;
+
+    ctx.save();
+    ctx.lineWidth = 1.0;
+    for (let i = 0; i < RIPPLE_COUNT; i++) {
+      const progress = ((time * rippleSpeed + i / RIPPLE_COUNT) % 1.0);
+      const r = progress * maxR;
+      if (r < 18) continue;
+
+      const rx = r;
+      const ry = r * 0.65;
+
+      let alpha = 0;
+      if (progress < 0.16) {
+        alpha = (progress / 0.16) * 0.28;
+      } else if (progress < 0.68) {
+        alpha = 0.28 * (1.0 - (progress - 0.16) / 0.84);
+      } else {
+        alpha = Math.max(0, (1.0 - progress) / 0.32) * 0.12;
+      }
+
+      ctx.strokeStyle = `rgba(185, 135, 248, ${alpha.toFixed(3)})`;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, rx, ry, -0.20, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // ----------------------------------------------------
+    // 3. Letters/Tokens Drifting OUT From Background (从背景漂出，无交互，原始大小与速度)
+    // ----------------------------------------------------
+    particles.forEach((p) => {
+      // Advance forward from background to foreground
+      p.z -= p.speed;
+      if (p.z <= 0) {
+        spawnParticle(p, false);
+      }
+
+      // Progress: 0 (deep background) to 1 (near foreground)
+      const progress = 1.0 - p.z;
+
+      // Subtle scale factor: starts compact at ~0.78x and grows gently to ~1.22x
+      const scale = 0.78 + progress * 0.44;
+      const fontSize = Math.round(p.baseSize * scale);
+
+      // Radial perspective position emerging from center outwards
+      const dist = progress * 1.05;
+      const screenX = cx + p.dirX * width * 0.48 * dist;
+      const screenY = cy + p.dirY * height * 0.44 * dist;
+
+      // Opacity envelope: soft fade-in from depth, stable midground, gentle fade-out
+      let alpha = 0;
+      if (progress < 0.20) {
+        alpha = (progress / 0.20) * p.maxAlpha;
+      } else if (progress < 0.76) {
+        alpha = p.maxAlpha;
+      } else {
+        alpha = Math.max(0, (1.0 - progress) / 0.24) * p.maxAlpha;
+      }
+
+      if (alpha <= 0.02) return;
+
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      // Restrained, clean original font style
+      ctx.font = `400 ${fontSize}px "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`;
+      // Clean soft lilac-white text color
+      ctx.fillStyle = `rgba(222, 214, 238, ${alpha.toFixed(3)})`;
+      ctx.fillText(p.text, screenX, screenY);
+      ctx.restore();
+    });
+
+    ctx.restore();
+
+    rafId = requestAnimationFrame(draw);
+  }
+
+  // Ensure canvas is sized & immediately kick off drawing loop
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+  draw();
+}
+
+// Immediately initialize so the canvas is rendered right away
+initRevealWavesCanvas();
 
 function setupAboutSection() {
   const aboutText = document.getElementById('about-text');
@@ -1494,6 +1427,8 @@ function setupProjectsSection() {
     var label = document.getElementById('st-label');
     var pctEl = document.getElementById('scroll-pct');
 
+    if (!timeline || !bar) return;
+
     var sections = [
       { id: 'about', name: 'About' },
       { id: 'projects', name: 'Projects' },
@@ -1505,16 +1440,23 @@ function setupProjectsSection() {
       return true;
     });
 
+    if (!sections.length) return;
+
     var scrollY0 = window.scrollY || window.pageYOffset;
-    var zoneTop = document.getElementById(sections[0].id).getBoundingClientRect().top + scrollY0;
+    var firstSecEl = document.getElementById(sections[0].id);
     var lastEl = document.getElementById(sections[sections.length - 1].id);
+    if (!firstSecEl || !lastEl) return;
+
+    var zoneTop = firstSecEl.getBoundingClientRect().top + scrollY0;
     var zoneBottom = lastEl.getBoundingClientRect().top + lastEl.offsetHeight + scrollY0;
     var zoneH = zoneBottom - zoneTop;
+    if (zoneH <= 0) return;
 
     
     var segEls = [];
     sections.forEach(function (sec) {
       var el = document.getElementById(sec.id);
+      if (!el) return;
       var elTop = el.getBoundingClientRect().top + scrollY0;
       sec.top = elTop;
       sec.bottom = elTop + el.offsetHeight;
@@ -1548,48 +1490,60 @@ function setupProjectsSection() {
       endTrigger: '#' + sections[sections.length - 1].id,
       end: 'bottom bottom',
       onUpdate: function (self) {
-        var progress = self.progress;
+        try {
+          var progress = self.progress;
 
-        
-        var docH = document.documentElement.scrollHeight - window.innerHeight;
-        var pageP = docH > 0 ? Math.round((window.scrollY / docH) * 100) : 0;
-        pctEl.textContent = '(' + pageP + ')';
+          var docH = document.documentElement.scrollHeight - window.innerHeight;
+          var pageP = docH > 0 ? Math.round((window.scrollY / docH) * 100) : 0;
+          if (pctEl) pctEl.textContent = '(' + pageP + ')';
 
-        if (progress <= 0 || progress >= 0.90) {
-          timeline.classList.remove('visible');
-          pctEl.classList.remove('visible');
-          timeline.style.opacity = '';
-          pctEl.style.opacity = '';
-          return;
-        }
-        timeline.classList.add('visible');
-        pctEl.classList.add('visible');
-
-        var activeIdx = 0;
-        var cumul = 0;
-        for (var i = 0; i < sections.length; i++) {
-          var segStart = cumul;
-          var segEnd = cumul + sections[i].ratio;
-
-          if (progress < segEnd) {
-            
-            var inner = (progress - segStart) / sections[i].ratio;
-            segEls[i].fill.style.height = (Math.min(1, Math.max(0, inner)) * 100).toFixed(1) + '%';
-            activeIdx = i;
-            
-            for (var j = i + 1; j < sections.length; j++) {
-              segEls[j].fill.style.height = '0%';
+          if (progress <= 0 || progress >= 0.90) {
+            if (timeline) {
+              timeline.classList.remove('visible');
+              timeline.style.opacity = '';
             }
-            break;
-          } else {
-            
-            segEls[i].fill.style.height = '100%';
+            if (pctEl) {
+              pctEl.classList.remove('visible');
+              pctEl.style.opacity = '';
+            }
+            return;
           }
-          cumul = segEnd;
-        }
+          if (timeline) timeline.classList.add('visible');
+          if (pctEl) pctEl.classList.add('visible');
 
-        label.textContent = sections[activeIdx].name;
-        label.style.top = (progress * 100).toFixed(1) + '%';
+          var activeIdx = 0;
+          var cumul = 0;
+          for (var i = 0; i < sections.length; i++) {
+            var segStart = cumul;
+            var segEnd = cumul + sections[i].ratio;
+
+            if (progress < segEnd) {
+              var inner = (progress - segStart) / sections[i].ratio;
+              if (segEls[i] && segEls[i].fill) {
+                segEls[i].fill.style.height = (Math.min(1, Math.max(0, inner)) * 100).toFixed(1) + '%';
+              }
+              activeIdx = i;
+              for (var j = i + 1; j < sections.length; j++) {
+                if (segEls[j] && segEls[j].fill) {
+                  segEls[j].fill.style.height = '0%';
+                }
+              }
+              break;
+            } else {
+              if (segEls[i] && segEls[i].fill) {
+                segEls[i].fill.style.height = '100%';
+              }
+            }
+            cumul = segEnd;
+          }
+
+          if (label && sections && sections[activeIdx] && sections[activeIdx].name) {
+            label.textContent = sections[activeIdx].name;
+            label.style.top = (progress * 100).toFixed(1) + '%';
+          }
+        } catch (err) {
+          // Silent guard against transient scroll errors
+        }
       }
     });
   })();
@@ -1597,13 +1551,15 @@ function setupProjectsSection() {
   
   ; (function () {
     var groups = document.querySelectorAll('.skill-group');
+    if (!groups || !groups.length) return;
 
-    
     var firstBody = groups[0].querySelector('.skill-body');
-    firstBody.style.height = firstBody.scrollHeight + 'px';
+    if (firstBody) firstBody.style.height = firstBody.scrollHeight + 'px';
 
     groups.forEach(function (group) {
-      group.querySelector('.skill-header').addEventListener('click', function () {
+      var header = group.querySelector('.skill-header');
+      if (!header) return;
+      header.addEventListener('click', function () {
         if (group.classList.contains('open')) return; 
 
         
@@ -1732,8 +1688,10 @@ function setupProjectsSection() {
       0
     );
 
-    
-    tl.to([stTimeline, pctEl], { opacity: 0, duration: 0.08 }, 0.1);
+    var fadeTargets = [stTimeline, pctEl].filter(Boolean);
+    if (fadeTargets.length) {
+      tl.to(fadeTargets, { opacity: 0, duration: 0.08 }, 0.1);
+    }
 
     
     gsap.set(title, { yPercent: 0, x: function () { return window.innerWidth * 1.1; } });
