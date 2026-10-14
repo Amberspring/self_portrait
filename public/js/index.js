@@ -930,7 +930,8 @@ function setupAboutSection() {
   });
 
   function initPhotoScroll() {
-    if (!photoFrame) return;
+    if (!photoFrame || photoFrame._scrollInited) return;
+    photoFrame._scrollInited = true;
     var tl = gsap.timeline({
       scrollTrigger: {
         trigger: photoWrap,
@@ -943,12 +944,18 @@ function setupAboutSection() {
     tl.fromTo(photoFrame, { opacity: 0, filter: 'blur(20px)' }, { opacity: 1, filter: 'blur(0px)', ease: 'none', duration: 0.3 }, 0);
   }
 
+  initPhotoScroll();
   const firstImg = photoSlides[0] || photoFrame;
-  if (firstImg && firstImg.decode) {
-    firstImg.decode().then(initPhotoScroll).catch(initPhotoScroll);
-  } else if (firstImg) {
-    firstImg.onload = initPhotoScroll;
-    if (firstImg.complete) initPhotoScroll();
+  if (firstImg) {
+    if (firstImg.decode) {
+      firstImg.decode().then(function () {
+        if (window.ScrollTrigger) ScrollTrigger.refresh();
+      }).catch(function () {});
+    } else {
+      firstImg.onload = function () {
+        if (window.ScrollTrigger) ScrollTrigger.refresh();
+      };
+    }
   }
 
   // 2s per slide smooth auto-scrolling carousel

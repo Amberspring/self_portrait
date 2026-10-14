@@ -21,7 +21,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
   <link rel="preload" href="assets/fonts/Breton.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/Machine.otf" as="font" type="font/otf" crossorigin>
-  <link rel="preload" href="assets/images/profile/me.avif" as="image" fetchpriority="high">
+  <link rel="preload" href="/assets/images/profile/photo1.jpg" as="image" fetchpriority="high">
+  <link rel="preload" href="/assets/images/profile/me.avif" as="image" fetchpriority="high">
   <link rel="preload" href="assets/images/projects/Covers/cyberDiag_web.avif" as="image" fetchpriority="high">
   <link rel="preload" href="assets/images/projects/Covers/Overtake.avif" as="image" fetchpriority="low">
   <link rel="stylesheet" href="/styles/index.css?v=20260423-r12">
@@ -107,10 +108,10 @@
       <div class="about-photo-wrap" id="about-photo-wrap">
         <div class="about-photo-frame" id="about-photo-frame">
           <div class="about-photo-track" id="about-photo-track">
-            <img class="about-photo-slide" src="assets/images/profile/photo1.jpg" data-fallback="assets/images/profile/me.avif" alt="Flora Yeung 1" decoding="async">
-            <img class="about-photo-slide" src="assets/images/profile/photo2.jpg" data-fallback="assets/images/profile/me.avif" alt="Flora Yeung 2" decoding="async">
-            <img class="about-photo-slide" src="assets/images/profile/photo3.jpg" data-fallback="assets/images/profile/me.avif" alt="Flora Yeung 3" decoding="async">
-            <img class="about-photo-slide" src="assets/images/profile/photo1.jpg" data-fallback="assets/images/profile/me.avif" alt="Flora Yeung 1 Clone" decoding="async" aria-hidden="true">
+            <img class="about-photo-slide" src="/assets/images/profile/photo1.jpg" data-fallback="/assets/images/profile/me.avif" alt="Flora Yeung" decoding="async" onerror="this.onerror=null;this.src='/assets/images/profile/me.avif';">
+            <img class="about-photo-slide" src="/assets/images/profile/photo2.jpg" data-fallback="/assets/images/profile/me.avif" alt="Flora Yeung" decoding="async" onerror="this.onerror=null;this.src='/assets/images/profile/me.avif';">
+            <img class="about-photo-slide" src="/assets/images/profile/photo3.jpg" data-fallback="/assets/images/profile/me.avif" alt="Flora Yeung" decoding="async" onerror="this.onerror=null;this.src='/assets/images/profile/me.avif';">
+            <img class="about-photo-slide" src="/assets/images/profile/photo1.jpg" data-fallback="/assets/images/profile/me.avif" alt="Flora Yeung Clone" decoding="async" aria-hidden="true" onerror="this.onerror=null;this.src='/assets/images/profile/me.avif';">
           </div>
           <div class="about-photo-dots" id="about-photo-dots">
             <span class="about-photo-dot active" data-index="0"></span>
