@@ -1596,11 +1596,24 @@ function setupProjectsSection() {
         }
       });
     }
+    function updateProjItemsLanguage() {
+      var isEn = window.__I18N_LANG === 'en';
+      document.querySelectorAll('.proj-item').forEach(function (item) {
+        var id = item.dataset.id;
+        var proj = window.FLORA_PROJECTS_MAP && window.FLORA_PROJECTS_MAP[id];
+        if (proj) {
+          item.textContent = isEn ? proj.title : (proj.titleZh || proj.title);
+        }
+      });
+    }
+    updateProjItemsLanguage();
+
     window.addEventListener('resize', refreshOpenSkillHeight);
     var prevLangHook = window.onLanguageChanged;
     window.onLanguageChanged = function (lang) {
       if (typeof prevLangHook === 'function') prevLangHook(lang);
       refreshOpenSkillHeight();
+      updateProjItemsLanguage();
     };
   })();
 
@@ -2135,53 +2148,6 @@ function setupProjectsSection() {
   
   const isEn = window.__I18N_LANG === 'en';
 
-  const PROJECTS = {
-    'cyberdiag': {
-      desc: isEn ? "Showcase website for the CyberDiag app, presenting its features and benefits, and offering download for easy access." : "Site web de présentation de l'application CyberDiag, pour présenter ses fonctionnalités et ses avantages et proposer le téléchargement afin de faciliter son accès.",
-      category: isEn ? 'Website' : 'Site Web', year: '2026', tags: ['Gsap', 'Lenis', 'Three.js'],
-      link: 'https://cyberdiag.dev',
-      images: ['assets/images/projects/CyberDiagWebsite/image1.png', 'assets/images/projects/CyberDiagWebsite/image2.png', 'assets/images/projects/CyberDiagWebsite/image3.png'],
-    },
-    'overtake': {
-      desc: isEn ? "Arcade-flavoured racing simulator, still under development. You can already drive on a low poly reproduction of the Spa-Francorchamps circuit, at the wheel of several car types running full physics (Cannon): GTE cars, plus a still experimental drift-oriented handling. The project aims at far more ambitious goals." : "Simulateur de course automobile à caractère arcade, encore en cours de création. On y roule déjà sur une reproduction en low poly du circuit de Spa-Francorchamps, au volant de plusieurs types de voitures dotées d'une physique complète (Cannon) : des GTE, ainsi qu'un comportement orienté drift encore expérimental. Le projet vise des objectifs bien plus ambitieux.",
-      category: isEn ? 'Web Game' : 'Jeu Web', year: '2026', tags: ['Three.js', 'WebGL', 'Cannon.js'],
-      images: ['assets/images/projects/Overtake/image1.png', 'assets/images/projects/Overtake/image2.png', 'assets/images/projects/Overtake/image3.png', 'assets/images/projects/Overtake/image4.png', 'assets/images/projects/Overtake/image5.png'],
-    },
-    'anima': {
-      desc: isEn ? "Website about animal rights, created to practice web animations with tools like GSAP and Lenis." : "Site web sur la cause animale afin de m'exercer à la création d'animations web avec des outils comme GSAP ou Lenis.",
-      category: isEn ? 'Website' : 'Site Web', year: '2026', tags: ['Gsap', 'Lenis'],
-      link: 'https://skynigh1.github.io/Anima/',
-      images: ['assets/images/projects/Anima/image1.png', 'assets/images/projects/Anima/image2.png', 'assets/images/projects/Anima/image3.png'],
-    },
-    'beyond-the-clouds': {
-      desc: isEn ? "A 3D world built with Three.js and WebGL, entirely on the web, aiming to recreate the visual DNA of the game Sky: Children of the Light. An experience carried out above all as a way to learn." : "Monde 3D en Three.js et WebGL, entièrement sur le web, visant à recréer l'ADN visuel du jeu Sky: Children of the Light. Une expérience menée avant tout dans un but d'apprentissage.",
-      category: isEn ? '3D Experience' : 'Expérience 3D', year: '2026', tags: ['Three.js', 'WebGL', 'GLSL'],
-      link: 'https://skynigh1.github.io/Beyond-the-Clouds/',
-      images: ['assets/images/projects/Beyond%20the%20Clouds/image1.png', 'assets/images/projects/Beyond%20the%20Clouds/image2.png', 'assets/images/projects/Beyond%20the%20Clouds/image3.png', 'assets/images/projects/Beyond%20the%20Clouds/image4.png', 'assets/images/projects/Beyond%20the%20Clouds/image5.png'],
-    },
-    'zenith': {
-      desc: isEn ? "Innovative web browser focused on privacy and performance, featuring a built-in ad blocker, optimized tab management, and extensive customization." : "Navigateur web innovant axé sur la confidentialité et la performance, avec bloqueur de publicités intégré, gestion optimisée des onglets et personnalisation poussée.",
-      category: isEn ? 'Desktop App' : 'Application Desktop', year: '2026', tags: ['Electron', 'JavaScript', 'Three.js'],
-      link: 'https://skynigh1.github.io/Zenith/',
-      images: ['assets/images/projects/Zenith/image1.png', 'assets/images/projects/Zenith/image2.png', 'assets/images/projects/Zenith/image3.png'],
-    },
-    'skymcdb': {
-      desc: isEn ? "A powerful and intuitive tool designed to manage, organize, and optimize your Minecraft building projects, developed specifically for builders." : "Un outil puissant et intuitif conçu pour gérer, organiser et optimiser vos projets de construction Minecraft, développé spécifiquement pour les builders.",
-      category: isEn ? 'Desktop App' : 'Application Desktop', year: '2024', tags: ['Java', 'JavaFX', 'CSS'],
-      images: ['assets/images/projects/skymcdb/image.png', 'assets/images/projects/skymcdb/image2.png', 'assets/images/projects/skymcdb/image3.png', 'assets/images/projects/skymcdb/image4.png'],
-    },
-    'chromablock': {
-      desc: isEn ? "Web adaptation of SkymcDB to reach a wider audience, introducing brand new features for Minecraft builders." : "Adaptation web de SkymcDB, pour élargir l'audience, permettant des fonctionnalités inédites dans le domaine du build Minecraft.",
-      category: 'Web Application', year: '2024', tags: ['JavaScript', 'HTML', 'CSS'],
-      images: ['assets/images/projects/chromablock/image1.png', 'assets/images/projects/chromablock/image2.png', 'assets/images/projects/chromablock/image3.png'],
-    },
-    'cyberdiag-app': {
-      desc: isEn ? "Desktop application designed for SMEs to perform comprehensive cybersecurity diagnostics. Intuitive interface to assess vulnerabilities and provide tailored recommendations." : "Application conçue pour les PME afin de réaliser des diagnostics de cybersécurité complets. Interface intuitive pour évaluer les vulnérabilités et proposer des recommandations personnalisées.",
-      category: isEn ? 'Desktop App' : 'Application Desktop', year: '2026', tags: ['Python', 'Gsap', 'Three.js'],
-      images: ['assets/images/projects/cyberdiag/image1.png', 'assets/images/projects/cyberdiag/image2.png', 'assets/images/projects/cyberdiag/image3.png'],
-    },
-  };
-
   const detailEl = document.getElementById('project-detail');
   const detailTitle = document.getElementById('detail-title');
   const detailTitleWrap = document.getElementById('detail-title-wrap');
@@ -2236,7 +2202,7 @@ function setupProjectsSection() {
   }
 
   function openProject(id, clickedItem) {
-    const proj = PROJECTS[id];
+    const proj = (window.FLORA_PROJECTS_MAP && window.FLORA_PROJECTS_MAP[id]);
     if (!proj || projectOpen) return;
     projectOpen = true; window._projectOpen = true;
     _flyingSourceItem = clickedItem;
@@ -2259,28 +2225,51 @@ function setupProjectsSection() {
     flyingTitle.style.paddingTop = cs.paddingTop;
     flyingTitle.style.paddingBottom = cs.paddingBottom;
 
-    
     gsap.set(flyingTitle, { left: rect.left, top: rect.top, opacity: 1, scale: 1, x: 0, y: 0, transformOrigin: 'left top' });
 
-    
     clickedItem.style.visibility = 'hidden';
 
+    const isEn = window.__I18N_LANG === 'en';
+    const loc = isEn ? proj.en : proj.zh;
+
+    detailTitle.textContent = isEn ? proj.title : (proj.titleZh || proj.title);
+    const categoryText = isEn ? (proj.natureEn || 'PROJECT') : (proj.natureZh || '项目实践');
+    detailYear.innerHTML = '<span style="color: rgba(255,255,255,0.45); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; margin-right: 0.8rem;">' + categoryText + '</span><span style="color: #e05d44; font-style: italic;">' + proj.year + '</span>';
     
-    detailTitle.textContent = clickedItem.textContent;
-    detailYear.textContent = proj.year;
-    detailDesc.textContent = proj.desc;
+    let descHtml = '<p style="font-size: 1rem; line-height: 1.8; color: rgba(255,255,255,0.85); margin-bottom: 1.2rem;">' + loc.desc + '</p>';
+    if (loc.problem) {
+      descHtml += '<div class="detail-sec-card"><div class="detail-sec-title">' + (isEn ? '01 / Problem & Context' : '01 / 核心痛点与背景') + '</div><div class="detail-sec-text">' + loc.problem + '</div></div>';
+    }
+    if (loc.methods) {
+      descHtml += '<div class="detail-sec-card"><div class="detail-sec-title">' + (isEn ? '02 / Methodology & Stack' : '02 / 技术方案与方法') + '</div><div class="detail-sec-text">' + loc.methods + '</div></div>';
+    }
+    if (loc.outcomes) {
+      descHtml += '<div class="detail-sec-card"><div class="detail-sec-title">' + (isEn ? '03 / Outcomes & Deliverables' : '03 / 成果与交付物') + '</div><div class="detail-sec-text">' + loc.outcomes + '</div></div>';
+    }
+    if (loc.scope) {
+      descHtml += '<div class="detail-scope-box"><div class="detail-scope-title">' + (isEn ? 'PRD Scope & Phasing' : 'PRD 范围与阶段规划') + '</div><div class="detail-scope-text">' + loc.scope + '</div></div>';
+    }
+    if (loc.note) {
+      descHtml += '<div class="detail-note-box">' + loc.note + '</div>';
+    }
+    detailDesc.innerHTML = descHtml;
+
     detailTags.innerHTML = proj.tags.map(function (t) { return '<span class="detail-tag">' + t + '</span>'; }).join('');
     if (proj.link) {
       detailVisit.href = proj.link;
       detailVisit.classList.add('has-link');
+      var visitText = isEn ? 'Visit Live Demo 🡲' : '访问线上演示 🡲';
+      detailVisit.setAttribute('data-chr', visitText);
+      if (window.buildChrHover) window.buildChrHover(detailVisit, visitText);
+      else detailVisit.textContent = visitText;
     } else {
       detailVisit.removeAttribute('href');
       detailVisit.classList.remove('has-link');
     }
     
-    var allImages = [clickedItem.dataset.img].concat(proj.images);
-    detailThumbsInner.innerHTML = allImages.map(function (src) { return '<img src="' + src + '" alt="" decoding="async">'; }).join('');
-    detailSelected.innerHTML = '<img src="' + allImages[0] + '" alt="" decoding="async">';
+    var allImages = proj.gallery && proj.gallery.length ? proj.gallery : [proj.cover];
+    detailThumbsInner.innerHTML = allImages.map(function (src) { return '<img src="' + src + '" alt="' + proj.title + '" decoding="async">'; }).join('');
+    detailSelected.innerHTML = '<img src="' + allImages[0] + '" alt="' + proj.title + '" decoding="async">';
     detailThumbsInner.querySelectorAll('img').forEach(function (img, i) {
       if (img.decode) img.decode().catch(function () { });
       
@@ -2439,9 +2428,11 @@ function setupProjectsSection() {
     
     items.forEach(function (item) { if (item.dataset.img) allSrcs.push(item.dataset.img); });
     
-    Object.keys(PROJECTS).forEach(function (id) {
-      var imgs = PROJECTS[id].images;
-      if (imgs) allSrcs = allSrcs.concat(imgs);
+    var pMap = window.FLORA_PROJECTS_MAP || {};
+    Object.keys(pMap).forEach(function (id) {
+      var p = pMap[id];
+      if (p.gallery && Array.isArray(p.gallery)) allSrcs = allSrcs.concat(p.gallery);
+      if (p.cover) allSrcs.push(p.cover);
     });
     
     var seen = {};

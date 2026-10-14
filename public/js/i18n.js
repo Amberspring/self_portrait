@@ -321,6 +321,16 @@
       window.rebuildRevealPhrase(T['index.reveal.phrase'], isDynamicSwitch);
     }
 
+    // Sync project list labels with current language
+    document.querySelectorAll('.proj-item[data-id]').forEach(function (item) {
+      var id = item.getAttribute('data-id');
+      var pMap = window.FLORA_PROJECTS_MAP || {};
+      var proj = pMap[id];
+      if (proj) {
+        item.textContent = targetLang === 'zh' ? (proj.titleZh || proj.title) : proj.title;
+      }
+    });
+
     if (isDynamicSwitch && typeof window.onLanguageChanged === 'function') {
       window.onLanguageChanged(targetLang);
     }

@@ -1,6 +1,6 @@
 {
-  "summary":  "Implementation plan for integrating the CrystalizedBall WebGL2 shader animation (preset=\"nebula\", #9478FF) into the scroll-reveal transition background behind the phrase \"优秀的商业需要连接数理、代码、金融与市场\".",
-  "updatedAt":  "2026-10-12T10:48:13.459550952Z",
-  "requestFeedback":  true,
-  "userFacing":  true
+  "summary": "个人照片快速导入与展示集成计划：\n1. 建立剪贴板与拖拽直传接口（POST /api/upload-photo），支持用户直接在预览页 Ctrl+V 粘贴或拖拽替换 photo1.jpg、photo2.jpg、photo3.jpg。\n2. 映射照片到「关于我」与个人风采展示模块，确保高清无损自适应呈现。\n3. 支持在对话中直接发送粘贴图片或附件，自动写入对应资源目录并生成 GitHub 同步提交指引。",
+  "updatedAt": "2026-10-14T18:32:37.263006106Z",
+  "requestFeedback": true,
+  "userFacing": true
 }

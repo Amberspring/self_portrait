@@ -145,20 +145,20 @@
     }
     .face-name {
       position: absolute; z-index: 2;
-      font-family: 'Breton', sans-serif;
-      font-size: clamp(1.8rem, 3.5vw, 3.5rem);
-      font-weight: 300; letter-spacing: -0.02em;
-      color: #f0f0f0; line-height: 1.15;
-      text-shadow: 0 2px 30px rgba(0,0,0,0.6);
-      max-width: 80%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: clamp(2rem, 3.4vw, 3.4rem);
+      font-weight: 400; letter-spacing: -0.02em;
+      color: #ffffff; line-height: 1.15;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.7);
+      max-width: 82%;
     }
-    .layout-left .face-name { top: 2rem; right: 2rem; text-align: right; }
-    .layout-right .face-name { top: 2rem; left: 2rem; }
+    .layout-left .face-name { top: 2.2rem; right: 2.5rem; text-align: right; }
+    .layout-right .face-name { top: 2.2rem; left: 2.5rem; }
 
     .face-info {
       position: relative; width: 33.333%; height: 100%;
       display: flex; flex-direction: column; justify-content: center;
-      padding: 2.5rem; overflow: hidden; flex-shrink: 0;
+      padding: 3rem 2.5rem; overflow: hidden; flex-shrink: 0;
     }
     .face-info-bg {
       position: absolute; inset: -40px; z-index: 0;
@@ -170,33 +170,99 @@
     }
     .face-info::before {
       content: ''; position: absolute; inset: 0;
-      background: rgba(10, 10, 10, 0.55); z-index: 1;
+      background: rgba(10, 10, 10, 0.58); z-index: 1;
     }
     .face-info-content { position: relative; z-index: 2; }
-    .face-category {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.65rem; font-weight: 700;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      color: rgba(255,255,255,0.45); margin-bottom: 1.2rem;
+    .face-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.85rem;
+    }
+    .face-nature {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+    }
+    .face-meta-sep {
+      color: rgba(255, 255, 255, 0.25);
+      font-size: 0.7rem;
     }
     .face-year {
-      font-family: 'other', sans-serif;
-      font-size: 0.85rem; color: #a855f7; margin-bottom: 1rem;
+      font-family: 'Inter', Georgia, serif;
+      font-size: 0.9rem;
+      font-style: italic;
+      color: #e05d44;
     }
     .face-desc {
-      font-family: 'Breton', sans-serif;
-      font-size: clamp(1.42rem, 1.45vw, 1.48rem);
-      line-height: 1.75; color: rgba(255,255,255,0.55);
-      margin-bottom: 1.5rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      font-size: clamp(0.95rem, 1.05vw, 1.05rem);
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.88);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      margin-bottom: 1.1rem;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
     }
-    .face-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-    .face-tag {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.6rem; font-weight: 600;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
-      border: 1px solid rgba(255,255,255,0.12);
-      padding: 0.35em 0.7em; border-radius: 50px;
+    .face-brief {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      padding: 0.85rem 1rem;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      margin-bottom: 1.3rem;
+      backdrop-filter: blur(8px);
+    }
+    .face-brief-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.82rem;
+      line-height: 1.55;
+    }
+    .face-brief-k {
+      flex-shrink: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: rgba(255, 255, 255, 0.42);
+      min-width: 2.4rem;
+      padding-top: 0.08rem;
+    }
+    .face-brief-v {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: rgba(255, 255, 255, 0.82);
+      font-weight: 400;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .face-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(255, 255, 255, 0.65);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .face-cta:hover {
+      color: #fff;
+      transform: translateX(4px);
     }
 
     
@@ -271,18 +337,309 @@
     }
 
     
-    @media (max-width: 768px) {
-      .cube-viewport { border-radius: 20px; }
-      .face-content.layout-left,
-      .face-content.layout-right { flex-direction: column; }
-      .face-cover { width: 100%; height: 60%; }
-      .face-info { width: 100%; height: 40%; padding: 1.2rem; }
-      .layout-left .face-name { top: 1rem; right: 1rem; font-size: clamp(1.2rem, 5vw, 2rem); }
-      .layout-right .face-name { top: 1rem; left: 1rem; font-size: clamp(1.2rem, 5vw, 2rem); }
-      .face-desc { font-size: clamp(0.85rem, 2.8vw, 1.1rem); }
-      .page-title { top: 1.5rem; left: 1.5rem; font-size: clamp(1.8rem, 7vw, 3rem); }
-      .back-btn { top: 1.5rem; right: 1.5rem; }
-      .scroll-hint { bottom: 1.5rem; left: 1.5rem; }
+    .face-badge {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2em 0.6em;
+      border-radius: 4px;
+      margin-left: 0.6rem;
+      vertical-align: middle;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.7);
+    }
+    .face-badge.badge-live {
+      border-color: rgba(52, 211, 153, 0.4);
+      background: rgba(52, 211, 153, 0.12);
+      color: #34d399;
+    }
+    .face-badge.badge-concept {
+      border-color: rgba(168, 85, 247, 0.4);
+      background: rgba(168, 85, 247, 0.12);
+      color: #c084fc;
+    }
+    .face-badge.badge-research, .face-badge.badge-thesis, .face-badge.badge-academic, .face-badge.badge-quant {
+      border-color: rgba(96, 165, 250, 0.4);
+      background: rgba(96, 165, 250, 0.12);
+      color: #60a5fa;
+    }
+    .face-badge.badge-consulting {
+      border-color: rgba(251, 146, 60, 0.4);
+      background: rgba(251, 146, 60, 0.12);
+      color: #fb923c;
+    }
+
+    .face-content {
+      cursor: pointer;
+    }
+
+    /* Full-screen Case Study Detail Overlay for Works */
+    .project-detail {
+      position: fixed;
+      inset: 0;
+      z-index: 30015;
+      background: #0a0a0e;
+      pointer-events: none;
+      opacity: 0;
+      overflow: hidden;
+      display: flex;
+    }
+    .project-detail.active {
+      pointer-events: auto;
+    }
+    .detail-back {
+      position: absolute;
+      top: 2.5rem;
+      left: 2.5rem;
+      z-index: 20;
+      cursor: pointer;
+      opacity: 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.8);
+      padding: 0.4em 0.8em;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50px;
+      background: rgba(10, 10, 14, 0.8);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+    .detail-back:hover {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    .detail-info {
+      width: 46%;
+      height: 100vh;
+      padding: 18vh 3.5rem 3.5rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.15) transparent;
+      z-index: 10;
+    }
+    .detail-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      margin-bottom: 1.6rem;
+    }
+    .detail-title {
+      font-family: 'Breton', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: clamp(2.2rem, 3.2vw, 3.6rem);
+      line-height: 1.15;
+      color: #ffffff;
+      font-weight: 500;
+    }
+    .detail-year {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .detail-nature-tag {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+    }
+    .detail-year-tag {
+      font-family: 'Inter', Georgia, serif;
+      font-size: 0.95rem;
+      font-style: italic;
+      color: #e05d44;
+    }
+    .detail-desc {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 1.4rem;
+    }
+    .detail-lead {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.92);
+      margin-bottom: 1.4rem;
+      font-weight: 400;
+    }
+    .detail-sec-card {
+      margin-top: 0.9rem;
+      padding: 1.1rem 1.3rem;
+      background: rgba(255, 255, 255, 0.028);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+    }
+    .detail-sec-title {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      font-size: 0.74rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.45);
+      margin-bottom: 0.45rem;
+    }
+    .detail-sec-text {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: 0.94rem;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.82);
+    }
+    .detail-scope-box {
+      margin-top: 0.9rem;
+      padding: 1.1rem 1.3rem;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+    }
+    .detail-scope-title {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      font-size: 0.74rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 0.45rem;
+    }
+    .detail-scope-text {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: rgba(255, 255, 255, 0.82);
+    }
+    .detail-note-box {
+      margin-top: 0.9rem;
+      padding: 0.9rem 1.1rem;
+      background: rgba(224, 93, 68, 0.05);
+      border: 1px solid rgba(224, 93, 68, 0.2);
+      border-radius: 12px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: 0.86rem;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.75);
+    }
+    .detail-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 1.2rem;
+    }
+    .detail-tag {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 0.3em 0.7em;
+      border-radius: 50px;
+    }
+    .detail-visit {
+      display: none;
+      align-items: center;
+      gap: 0.4rem;
+      width: fit-content;
+      margin-top: 1.5rem;
+      padding: 0.6em 1.3em;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      background: rgba(52, 211, 153, 0.08);
+      border-radius: 50px;
+      color: #34d399;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: all 0.3s ease;
+    }
+    .detail-visit.has-link {
+      display: inline-flex;
+    }
+    .detail-visit:hover {
+      background: rgba(52, 211, 153, 0.2);
+      border-color: rgba(52, 211, 153, 0.8);
+      color: #6ee7b7;
+      transform: translateY(-1px);
+    }
+    .detail-gallery-wrap {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 54%;
+      height: 100vh;
+      display: flex;
+      align-items: stretch;
+      background: #060608;
+    }
+    .detail-thumbs {
+      width: 18%;
+      height: 100vh;
+      overflow-y: auto;
+      flex-shrink: 0;
+      padding: 6rem 0.8rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .detail-thumbs-inner img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      border-radius: 4px;
+      opacity: 0.45;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 0.6rem;
+      transition: all 0.3s ease;
+    }
+    .detail-thumbs-inner img:hover,
+    .detail-thumbs-inner img.active {
+      opacity: 1;
+      border-color: #a855f7;
+      transform: scale(1.03);
+    }
+    .detail-selected {
+      flex: 1;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      position: relative;
+    }
+    .detail-selected img {
+      max-width: 95%;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .detail-selected-caption {
+      position: absolute;
+      bottom: 2rem;
+      left: 3rem;
+      right: 3rem;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    @media (max-width: 1024px) {
+      .detail-info { width: 100%; height: auto; padding: 6rem 2rem 2rem; }
+      .detail-gallery-wrap { position: relative; width: 100%; height: auto; }
+      .project-detail { flex-direction: column; overflow-y: auto; }
     }
 
 
