@@ -2,6 +2,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import fs from 'fs';
+import { execSync } from 'child_process';
 import { defineConfig, Plugin } from 'vite';
 
 function photoUploadPlugin(): Plugin {
@@ -46,7 +47,12 @@ function photoUploadPlugin(): Plugin {
             const distJpg = path.join(distProfileDir, `${slot}.jpg`);
 
             fs.writeFileSync(targetJpg, buffer);
-            try { fs.writeFileSync(distJpg, buffer); } catch (_) {}
+            try {
+              if (buffer.length > 1.2 * 1024 * 1024) {
+                execSync(`convert "${targetJpg}" -auto-orient -resize "2400x2400>" -quality 90 "${targetJpg}"`);
+              }
+            } catch (_) {}
+            try { fs.copyFileSync(targetJpg, distJpg); } catch (_) {}
 
             // Remove old fallback avif so the newly uploaded JPG is immediately loaded
             const targetAvif = path.join(publicProfileDir, `${slot}.avif`);
@@ -85,6 +91,9 @@ export default defineConfig(() => {
       },
     },
     server: {
+      host: '0.0.0.0',
+      port: 3000,
+      allowedHosts: true as const,
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',

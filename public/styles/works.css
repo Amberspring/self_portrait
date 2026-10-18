@@ -126,143 +126,257 @@
     
     .face-content {
       position: relative; width: 100%; height: 100%; display: flex;
+      cursor: default;
+      overflow: hidden;
+      background: #0a0a0a;
     }
     .face-content.layout-left { flex-direction: row; }
     .face-content.layout-right { flex-direction: row-reverse; }
 
+    /* Left 66.666%: Cover zone with Luke-style bright ambient background */
     .face-cover {
-      position: relative; width: 66.666%; height: 100%;
-      overflow: hidden; flex-shrink: 0;
+      position: relative;
+      width: 66.666%;
+      height: 100%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #0a0a0a;
+      z-index: 1;
     }
-    .face-cover img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-      -webkit-user-drag: none; user-select: none; pointer-events: none;
-    }
-    .face-cover::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0) 65%, rgba(0,0,0,0.3) 100%);
+    .face-cover-bg {
+      position: absolute;
+      inset: -40px;
+      z-index: 0;
+      overflow: hidden;
       pointer-events: none;
     }
-    .face-name {
-      position: absolute; z-index: 2;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      font-size: clamp(2rem, 3.4vw, 3.4rem);
-      font-weight: 400; letter-spacing: -0.02em;
-      color: #ffffff; line-height: 1.15;
-      text-shadow: 0 4px 30px rgba(0,0,0,0.7);
-      max-width: 82%;
+    .face-cover-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.04);
+      /* Clear, sharp, high-definition background matching Luke's clarity */
+      filter: blur(8px) saturate(1.22) brightness(0.92);
+      opacity: 0.92;
+      -webkit-user-drag: none;
+      user-select: none;
+      pointer-events: none;
     }
-    .layout-left .face-name { top: 2.2rem; right: 2.5rem; text-align: right; }
-    .layout-right .face-name { top: 2.2rem; left: 2.5rem; }
+    /* Luke's subtle vignette: completely clear in center, gentle fade at top & bottom */
+    .face-cover-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.02) 28%, rgba(0,0,0,0.02) 72%, rgba(0,0,0,0.32) 100%);
+      pointer-events: none;
+    }
 
-    .face-info {
-      position: relative; width: 33.333%; height: 100%;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 3rem 2.5rem; overflow: hidden; flex-shrink: 0;
+    .face-name {
+      position: absolute;
+      z-index: 5;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: clamp(1.4rem, 2.2vw, 2.3rem);
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      color: #ffffff;
+      line-height: 1.18;
+      text-shadow: 0 4px 24px rgba(0,0,0,0.92);
+      max-width: 84%;
+      pointer-events: none;
+      user-select: none;
     }
-    .face-info-bg {
-      position: absolute; inset: -40px; z-index: 0;
-      filter: blur(80px) saturate(1.6); opacity: 0.7;
-    }
-    .face-info-bg img {
-      width: 100%; height: 100%; object-fit: cover; transform: scale(1.5);
-      -webkit-user-drag: none; user-select: none; pointer-events: none;
-    }
-    .face-info::before {
-      content: ''; position: absolute; inset: 0;
-      background: rgba(10, 10, 10, 0.58); z-index: 1;
-    }
-    .face-info-content { position: relative; z-index: 2; }
-    .face-meta {
+    .layout-left .face-name { top: 2rem; right: 2.6rem; text-align: right; }
+    .layout-right .face-name { top: 2rem; left: 2.6rem; text-align: left; }
+
+    .face-mockup-wrap {
+      position: absolute;
+      inset: 5.6rem 2.5rem 2.2rem 2.5rem;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 0.85rem;
+      justify-content: center;
+      z-index: 4;
+      pointer-events: none; /* Strictly non-clickable */
     }
-    .face-nature {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", sans-serif;
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.14em;
+    .face-mockup-frame {
+      max-width: 100%;
+      max-height: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(14, 14, 16, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(0, 0, 0, 0.4);
+      cursor: default;
+      pointer-events: none; /* Image is strictly non-clickable */
+      user-select: none;
+    }
+    .face-mockup-img {
+      max-width: 100%;
+      max-height: calc(min(80vh, 800px) - 9.2rem);
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      -webkit-user-drag: none;
+      user-select: none;
+      pointer-events: none;
+      cursor: default;
+    }
+
+    /* Right 33.333%: Luke's exact face-info with face-info-bg */
+    .face-info {
+      position: relative;
+      width: 33.333%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(1.8rem, 3.2vw, 2.6rem) clamp(1.5rem, 2.4vw, 2.2rem);
+      overflow: hidden;
+      flex-shrink: 0;
+      box-sizing: border-box;
+      z-index: 2;
+    }
+    .face-info-bg {
+      position: absolute;
+      inset: -40px;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .face-info-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.4);
+      filter: blur(40px) saturate(1.85) brightness(1.05);
+      opacity: 0.72;
+      -webkit-user-drag: none;
+      user-select: none;
+      pointer-events: none;
+    }
+    /* Bespoke atmospheric lighting & glow per project */
+    .face-info-glow {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.85;
+      transition: background 0.5s ease;
+    }
+    .face-info::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(10, 10, 12, 0.42) 0%, rgba(6, 6, 8, 0.72) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .layout-left .face-info {
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .layout-right .face-info {
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .face-info-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-height: 100%;
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .face-info-content::-webkit-scrollbar {
+      display: none;
+    }
+    .face-category {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: clamp(0.72rem, 0.82vw, 0.86rem);
+      font-weight: 600;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.45);
-    }
-    .face-meta-sep {
-      color: rgba(255, 255, 255, 0.25);
-      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 0.45rem;
+      line-height: 1.35;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
     .face-year {
-      font-family: 'Inter', Georgia, serif;
-      font-size: 0.9rem;
-      font-style: italic;
-      color: #e05d44;
+      font-family: 'other', 'Machine', monospace, sans-serif;
+      font-size: 1.05rem;
+      color: #ff1e00; /* Signature red */
+      margin-bottom: 0.9rem;
+      letter-spacing: 0.08em;
+      line-height: 1;
     }
     .face-desc {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-      font-size: clamp(0.95rem, 1.05vw, 1.05rem);
-      line-height: 1.75;
-      color: rgba(255, 255, 255, 0.88);
-      font-weight: 400;
-      letter-spacing: 0.01em;
-      margin-bottom: 1.1rem;
+      font-family: 'Breton', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      font-size: clamp(0.9rem, 0.98vw, 1.02rem);
+      line-height: 1.62;
+      color: rgba(255, 255, 255, 0.84);
+      font-weight: 300;
+      letter-spacing: 0.012em;
+      margin-bottom: 1.2rem;
       overflow: hidden;
       display: -webkit-box;
       -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
-    .face-brief {
+    .face-tags {
       display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-      padding: 0.85rem 1rem;
-      background: rgba(255, 255, 255, 0.035);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      margin-bottom: 1.3rem;
-      backdrop-filter: blur(8px);
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 0;
     }
-    .face-brief-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.6rem;
-      font-size: 0.82rem;
-      line-height: 1.55;
-    }
-    .face-brief-k {
-      flex-shrink: 0;
+    .face-tag {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      color: rgba(255, 255, 255, 0.42);
-      min-width: 2.4rem;
-      padding-top: 0.08rem;
-    }
-    .face-brief-v {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      color: rgba(255, 255, 255, 0.82);
-      font-weight: 400;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      color: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+      padding: 0.22rem 0.6rem;
+      background: rgba(255, 255, 255, 0.03);
+      white-space: nowrap;
+      max-width: 100%;
+      text-overflow: ellipsis;
       overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
     }
-    .face-cta {
+    .face-actions {
+      margin-top: 1rem;
+    }
+    .face-live-btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      color: rgba(255, 255, 255, 0.65);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-weight: 600;
-      transition: all 0.25s ease;
+      text-decoration: none;
       cursor: pointer;
     }
-    .face-cta:hover {
-      color: #fff;
-      transform: translateX(4px);
+    .face-live-label {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: #ffffff;
+      padding: 0.4rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      transition: all 0.25s ease;
+    }
+    .face-live-btn:hover .face-live-label {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.6);
+      transform: translateY(-1px);
     }
 
     
@@ -295,15 +409,16 @@
       will-change: transform;
     }
     .counter-num {
-      font-family: 'Breton', sans-serif;
-      font-size: 1.6rem;
-      font-weight: 300;
-      letter-spacing: -0.02em;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 1.55rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
       color: #f0f0f0;
       line-height: 2.4rem;
       height: 2.4rem;
       text-align: left;
       white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
     .counter-num .dim {
       color: rgba(255,255,255,0.25);
@@ -337,44 +452,8 @@
     }
 
     
-    .face-badge {
-      display: inline-block;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.58rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.2em 0.6em;
-      border-radius: 4px;
-      margin-left: 0.6rem;
-      vertical-align: middle;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: rgba(255, 255, 255, 0.05);
-      color: rgba(255, 255, 255, 0.7);
-    }
-    .face-badge.badge-live {
-      border-color: rgba(52, 211, 153, 0.4);
-      background: rgba(52, 211, 153, 0.12);
-      color: #34d399;
-    }
-    .face-badge.badge-concept {
-      border-color: rgba(168, 85, 247, 0.4);
-      background: rgba(168, 85, 247, 0.12);
-      color: #c084fc;
-    }
-    .face-badge.badge-research, .face-badge.badge-thesis, .face-badge.badge-academic, .face-badge.badge-quant {
-      border-color: rgba(96, 165, 250, 0.4);
-      background: rgba(96, 165, 250, 0.12);
-      color: #60a5fa;
-    }
-    .face-badge.badge-consulting {
-      border-color: rgba(251, 146, 60, 0.4);
-      background: rgba(251, 146, 60, 0.12);
-      color: #fb923c;
-    }
-
     .face-content {
-      cursor: pointer;
+      cursor: default;
     }
 
     /* Full-screen Case Study Detail Overlay for Works */
@@ -417,7 +496,7 @@
     .detail-info {
       width: 46%;
       height: 100vh;
-      padding: 18vh 3.5rem 3.5rem 3.5rem;
+      padding: 16vh 3.5rem 3.5rem 3.5rem;
       display: flex;
       flex-direction: column;
       overflow-y: auto;
@@ -428,48 +507,54 @@
     .detail-title-wrap {
       display: flex;
       flex-direction: column;
-      gap: 0.55rem;
-      margin-bottom: 1.6rem;
-    }
-    .detail-title {
-      font-family: 'Breton', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      font-size: clamp(2.2rem, 3.2vw, 3.6rem);
-      line-height: 1.15;
-      color: #ffffff;
-      font-weight: 500;
+      gap: 0.35rem;
+      margin-bottom: 2rem;
     }
     .detail-year {
       display: flex;
-      align-items: center;
-      gap: 0.75rem;
+      flex-direction: column;
+      gap: 0.35rem;
+      margin-bottom: 0.4rem;
     }
-    .detail-nature-tag {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
-      font-size: 0.74rem;
-      font-weight: 500;
-      letter-spacing: 0.16em;
+    .detail-category {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: clamp(1.25rem, 1.4vw, 1.45rem); /* Twice Luke's size (0.65rem * 2) */
+      font-weight: 600;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: rgba(255, 255, 255, 0.45);
+      line-height: 1.3;
     }
     .detail-year-tag {
-      font-family: 'Inter', Georgia, serif;
-      font-size: 0.95rem;
-      font-style: italic;
-      color: #e05d44;
+      font-family: 'other', 'Machine', monospace, sans-serif;
+      font-size: 1.15rem;
+      color: #ff1e00; /* Luke's signature neon red */
+      letter-spacing: 0.08em;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .detail-title {
+      font-family: 'Breton', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: clamp(2.4rem, 3.4vw, 3.8rem);
+      line-height: 1.15;
+      color: #ffffff;
+      font-weight: 400;
+      margin-top: 0.4rem;
     }
     .detail-desc {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-      font-size: 1rem;
-      line-height: 1.8;
+      font-size: 1.05rem;
+      line-height: 1.85;
       color: rgba(255, 255, 255, 0.85);
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.6rem;
     }
     .detail-lead {
-      font-size: 1.05rem;
-      line-height: 1.8;
+      font-family: 'Breton', -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: 1.25rem;
+      line-height: 1.85;
       color: rgba(255, 255, 255, 0.92);
-      margin-bottom: 1.4rem;
-      font-weight: 400;
+      margin-bottom: 1.8rem;
+      font-weight: 300;
     }
     .detail-sec-card {
       margin-top: 0.9rem;
@@ -634,6 +719,43 @@
       font-family: 'Inter', sans-serif;
       font-size: 0.75rem;
       color: rgba(255, 255, 255, 0.5);
+    }
+
+    @media (max-width: 900px) {
+      .face-content,
+      .face-content.layout-left,
+      .face-content.layout-right {
+        flex-direction: column !important;
+      }
+      .face-cover {
+        width: 100% !important;
+        height: 56% !important;
+      }
+      .face-info {
+        width: 100% !important;
+        height: 44% !important;
+        padding: 1.2rem 1.4rem !important;
+        border-left: none !important;
+        border-right: none !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+      }
+      .face-name {
+        font-size: 1.25rem !important;
+        top: 1.2rem !important;
+        left: 1.4rem !important;
+        right: 1.4rem !important;
+        text-align: left !important;
+      }
+      .face-mockup-wrap {
+        inset: 3.4rem 1.2rem 0.8rem 1.2rem !important;
+      }
+      .face-desc {
+        -webkit-line-clamp: 2 !important;
+        margin-bottom: 0.6rem !important;
+      }
+      .face-tags {
+        gap: 0.3rem !important;
+      }
     }
 
     @media (max-width: 1024px) {
