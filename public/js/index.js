@@ -897,28 +897,10 @@ function setupAboutSection() {
   const photoDots = document.querySelectorAll('.about-photo-dot');
   const photoSlides = photoWrap.querySelectorAll('.about-photo-slide');
 
-  // Load saved custom photos from localStorage or fallback cleanly if photo1~3.jpg aren't placed yet
-  const STORAGE_KEY = 'flora_custom_profile_photos_v1';
-  let savedPhotos = null;
+  // Canonical profile photos (photo1 & photo3)
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) savedPhotos = JSON.parse(raw);
+    localStorage.removeItem('flora_custom_profile_photos_v1');
   } catch (e) {}
-
-  function applySlideSources(sources) {
-    if (!photoSlides.length || !sources || !sources.length) return;
-    const s0 = sources[0];
-    const s1 = sources[1] || sources[0];
-    const s2 = sources[2] || sources[0];
-    const list = [s0, s1, s2, s0];
-    photoSlides.forEach((img, idx) => {
-      if (list[idx]) img.src = list[idx];
-    });
-  }
-
-  if (savedPhotos && Array.isArray(savedPhotos) && savedPhotos.length > 0) {
-    applySlideSources(savedPhotos);
-  }
 
   photoSlides.forEach((img) => {
     img.addEventListener('error', function onErr() {
@@ -958,10 +940,10 @@ function setupAboutSection() {
     }
   }
 
-  // 2s per slide smooth auto-scrolling carousel
-  if (photoTrack && photoSlides.length >= 4) {
+  // 2s per slide smooth auto-scrolling carousel for 2 profile photos (photo1 & photo3)
+  if (photoTrack && photoSlides.length >= 3) {
     let currentSlide = 0;
-    const totalRealSlides = 3;
+    const totalRealSlides = 2;
     let slideTimer = null;
     let isAnimating = false;
 
@@ -2234,7 +2216,7 @@ function setupProjectsSection() {
 
     detailTitle.textContent = isEn ? proj.title : (proj.titleZh || proj.title);
     const categoryText = isEn ? (proj.natureEn || 'PROJECT') : (proj.natureZh || '项目实践');
-    detailYear.innerHTML = '<span style="color: rgba(255,255,255,0.45); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; margin-right: 0.8rem;">' + categoryText + '</span><span style="color: #e05d44; font-style: italic;">' + proj.year + '</span>';
+    detailYear.innerHTML = '<div class="detail-category">' + categoryText + '</div><div class="detail-year-tag">' + proj.year + '</div>';
     
     let descHtml = '<p style="font-size: 1rem; line-height: 1.8; color: rgba(255,255,255,0.85); margin-bottom: 1.2rem;">' + loc.desc + '</p>';
     if (loc.problem) {

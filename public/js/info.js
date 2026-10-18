@@ -161,27 +161,8 @@ document.addEventListener('visibilitychange', function () {
 
   const photoDots = photoWrap.querySelectorAll('.info-photo-dot');
   const photoSlides = photoWrap.querySelectorAll('.info-photo-slide');
-  const STORAGE_KEY = 'flora_custom_profile_photos_v1';
-
-  function applySlideSources(sources) {
-    if (!photoSlides.length || !sources || !sources.length) return;
-    const s0 = sources[0];
-    const s1 = sources[1] || sources[0];
-    const s2 = sources[2] || sources[0];
-    const list = [s0, s1, s2, s0];
-    photoSlides.forEach(function (img, idx) {
-      if (list[idx]) img.src = list[idx];
-    });
-  }
-
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const saved = JSON.parse(raw);
-      if (Array.isArray(saved) && saved.length > 0) {
-        applySlideSources(saved);
-      }
-    }
+    localStorage.removeItem('flora_custom_profile_photos_v1');
   } catch (e) {}
 
   photoSlides.forEach(function (img) {
@@ -193,9 +174,9 @@ document.addEventListener('visibilitychange', function () {
     });
   });
 
-  if (photoSlides.length >= 4) {
+  if (photoSlides.length >= 3) {
     let currentSlide = 0;
-    const totalRealSlides = 3;
+    const totalRealSlides = 2;
     let slideTimer = null;
     let isAnimating = false;
 

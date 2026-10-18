@@ -48,6 +48,57 @@
     }
   }
 
+  var PROJECT_THEMES = {
+    'finger-touch-piano': {
+      gradient: 'radial-gradient(circle at 85% 15%, rgba(139, 92, 246, 0.46) 0%, rgba(59, 130, 246, 0.22) 45%, rgba(10, 10, 18, 0.72) 100%)',
+      borderTone: 'rgba(139, 92, 246, 0.35)'
+    },
+    'tarobot-omega': {
+      gradient: 'radial-gradient(circle at 15% 85%, rgba(124, 58, 237, 0.48) 0%, rgba(217, 119, 6, 0.28) 45%, rgba(16, 10, 26, 0.72) 100%)',
+      borderTone: 'rgba(217, 119, 6, 0.35)'
+    },
+    'acg-pop-economy': {
+      gradient: 'radial-gradient(circle at 80% 30%, rgba(236, 72, 153, 0.46) 0%, rgba(6, 182, 212, 0.24) 50%, rgba(20, 10, 22, 0.72) 100%)',
+      borderTone: 'rgba(236, 72, 153, 0.35)'
+    },
+    'healthcare-prescription': {
+      gradient: 'radial-gradient(circle at 30% 20%, rgba(13, 148, 136, 0.5) 0%, rgba(20, 184, 166, 0.25) 48%, rgba(8, 20, 18, 0.72) 100%)',
+      borderTone: 'rgba(13, 148, 136, 0.35)'
+    },
+    'satellite-research': {
+      gradient: 'radial-gradient(circle at 85% 75%, rgba(37, 99, 235, 0.5) 0%, rgba(56, 189, 248, 0.28) 48%, rgba(8, 16, 32, 0.74) 100%)',
+      borderTone: 'rgba(56, 189, 248, 0.35)'
+    },
+    'huazhu-atour': {
+      gradient: 'radial-gradient(circle at 35% 30%, rgba(217, 119, 6, 0.5) 0%, rgba(180, 83, 9, 0.26) 50%, rgba(24, 16, 10, 0.72) 100%)',
+      borderTone: 'rgba(217, 119, 6, 0.35)'
+    },
+    'fx-policy-text': {
+      gradient: 'radial-gradient(circle at 75% 20%, rgba(59, 130, 246, 0.48) 0%, rgba(220, 38, 38, 0.24) 50%, rgba(12, 16, 28, 0.74) 100%)',
+      borderTone: 'rgba(96, 165, 250, 0.35)'
+    },
+    'commerceiq': {
+      gradient: 'radial-gradient(circle at 25% 75%, rgba(239, 68, 68, 0.5) 0%, rgba(249, 115, 22, 0.28) 50%, rgba(24, 10, 10, 0.72) 100%)',
+      borderTone: 'rgba(249, 115, 22, 0.35)'
+    },
+    'order-book-modeling': {
+      gradient: 'radial-gradient(circle at 80% 40%, rgba(16, 185, 129, 0.5) 0%, rgba(5, 150, 105, 0.26) 50%, rgba(6, 20, 14, 0.74) 100%)',
+      borderTone: 'rgba(16, 185, 129, 0.35)'
+    },
+    'stirpat-carbon': {
+      gradient: 'radial-gradient(circle at 25% 65%, rgba(16, 185, 129, 0.46) 0%, rgba(4, 120, 87, 0.24) 50%, rgba(8, 18, 12, 0.72) 100%)',
+      borderTone: 'rgba(52, 211, 153, 0.35)'
+    },
+    'medication-companion': {
+      gradient: 'radial-gradient(circle at 65% 25%, rgba(244, 63, 94, 0.48) 0%, rgba(236, 72, 153, 0.25) 50%, rgba(22, 10, 18, 0.72) 100%)',
+      borderTone: 'rgba(251, 113, 133, 0.35)'
+    },
+    'ai-music-record-store': {
+      gradient: 'radial-gradient(circle at 30% 75%, rgba(168, 85, 247, 0.5) 0%, rgba(245, 158, 11, 0.28) 50%, rgba(20, 10, 26, 0.72) 100%)',
+      borderTone: 'rgba(192, 132, 252, 0.35)'
+    }
+  };
+
   var faceOwner = [-1, -1, -1, -1];
 
   function populateFace(fIdx, pIdx) {
@@ -66,29 +117,44 @@
     faces[fIdx].dataset.pIdx = pIdx;
     faces[fIdx].dataset.projId = proj.id;
 
+    var coverUrl = proj.cover ? (proj.cover.startsWith('/') ? proj.cover : '/' + proj.cover) : '';
+    var theme = PROJECT_THEMES[proj.id] || {
+      gradient: 'radial-gradient(circle at 50% 50%, rgba(255, 30, 0, 0.25) 0%, rgba(10, 10, 12, 0.72) 100%)',
+      borderTone: 'rgba(255, 255, 255, 0.2)'
+    };
+
+    var liveBtn = proj.link
+      ? '<div class="face-actions">' +
+          '<a class="face-live-btn" href="' + proj.link + '" target="_blank" rel="noopener noreferrer">' +
+            '<span class="face-live-label">' + (en ? 'Visit Live App 🡵' : '访问线上体验 🡵') + '</span>' +
+          '</a>' +
+        '</div>'
+      : '';
+
     faces[fIdx].innerHTML =
       '<div class="face-content ' + (isLeft ? 'layout-left' : 'layout-right') + '">' +
         '<div class="face-cover" data-proj-id="' + proj.id + '">' +
+          '<div class="face-cover-bg">' +
+            '<img src="' + coverUrl + '" alt="" decoding="async">' +
+          '</div>' +
           '<div class="face-name">' + projTitle + '</div>' +
-          '<img src="' + proj.cover + '" alt="' + projTitle + '" decoding="async">' +
+          '<div class="face-mockup-wrap">' +
+            '<div class="face-mockup-frame" style="border-color: ' + theme.borderTone + ';">' +
+              '<img class="face-mockup-img" src="' + coverUrl + '" alt="' + projTitle + '" decoding="async" draggable="false">' +
+            '</div>' +
+          '</div>' +
         '</div>' +
         '<div class="face-info">' +
-          '<div class="face-info-bg"><img src="' + proj.cover + '" alt="" decoding="async"></div>' +
+          '<div class="face-info-bg"><img src="' + coverUrl + '" alt="" decoding="async"></div>' +
+          '<div class="face-info-glow" style="background: ' + theme.gradient + ';"></div>' +
           '<div class="face-info-content">' +
-            '<div class="face-meta">' +
-              '<span class="face-nature">' + categoryText + '</span>' +
-              '<span class="face-meta-sep">/</span>' +
-              '<span class="face-year">' + proj.year + '</span>' +
-            '</div>' +
+            '<div class="face-category">' + categoryText + '</div>' +
+            '<div class="face-year">' + proj.year + '</div>' +
             '<div class="face-desc">' + loc.desc + '</div>' +
-            '<div class="face-brief">' +
-              (loc.problem ? '<div class="face-brief-row"><span class="face-brief-k">' + (en ? 'Problem' : '问题') + '</span><span class="face-brief-v">' + loc.problem + '</span></div>' : '') +
-              (loc.methods ? '<div class="face-brief-row"><span class="face-brief-k">' + (en ? 'Method' : '方法') + '</span><span class="face-brief-v">' + loc.methods + '</span></div>' : '') +
-              (loc.outcomes ? '<div class="face-brief-row"><span class="face-brief-k">' + (en ? 'Outcome' : '成果') + '</span><span class="face-brief-v">' + loc.outcomes + '</span></div>' : '') +
+            '<div class="face-tags">' +
+              (proj.tags || []).map(function (t) { return '<span class="face-tag">' + t + '</span>'; }).join('') +
             '</div>' +
-            '<div class="face-cta">' +
-              '<span class="face-cta-label">' + (en ? 'View Case Study & Artifacts 🡲' : '查看完整交付物与 Case Study 🡲') + '</span>' +
-            '</div>' +
+            liveBtn +
           '</div>' +
         '</div>' +
       '</div>';
@@ -316,14 +382,10 @@
 
   document.addEventListener('touchend', function(e) {
     if (isDetailOpen) return;
-    if (!touchMovedSignificantly) {
-      var target = e.target;
-      var faceEl = target.closest('.cube-face');
-      if (faceEl) {
-        var pIdx = parseInt(faceEl.dataset.pIdx, 10);
-        if (!isNaN(pIdx) && PROJECTS[pIdx]) {
-          openProjectDetail(PROJECTS[pIdx]);
-        }
+    if (!touchMovedSignificantly && e && e.target) {
+      var liveBtn = e.target.closest('a.face-live-btn');
+      if (liveBtn && liveBtn.href) {
+        window.open(liveBtn.href, '_blank', 'noopener,noreferrer');
       }
     }
     snapTimer = setTimeout(snapToNearest, 120);
@@ -336,12 +398,10 @@
     document.body.style.userSelect = '';
 
     if (!hasDraggedSignificantly && e && e.target) {
-      var faceEl = e.target.closest('.cube-face');
-      if (faceEl) {
-        var pIdx = parseInt(faceEl.dataset.pIdx, 10);
-        if (!isNaN(pIdx) && PROJECTS[pIdx]) {
-          openProjectDetail(PROJECTS[pIdx]);
-        }
+      // Only allow deliberate click on live link button in the info section
+      var liveBtn = e.target.closest('a.face-live-btn');
+      if (liveBtn && liveBtn.href) {
+        window.open(liveBtn.href, '_blank', 'noopener,noreferrer');
       }
     }
     snapTimer = setTimeout(snapToNearest, 120);
@@ -444,7 +504,7 @@
     var categoryText = en ? (proj.natureEn || 'PROJECT') : (proj.natureZh || '项目实践');
 
     detailTitle.textContent = projTitle;
-    detailYear.innerHTML = '<span class="detail-nature-tag">' + categoryText + '</span><span class="detail-year-tag">' + proj.year + '</span>';
+    detailYear.innerHTML = '<div class="detail-category">' + categoryText + '</div><div class="detail-year-tag">' + proj.year + '</div>';
 
     // Structured Case Study layout
     var descHtml = '<p class="detail-lead">' + loc.desc + '</p>';
