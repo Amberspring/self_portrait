@@ -76,8 +76,9 @@
       link: '',
       year: '2025',
       tags: ['Python', 'Web Data Collection', 'BERTopic', 'HDBSCAN', 'c-TF-IDF', 'Survey Research'],
-      cover: '/assets/images/projects/REAL_slides_cut_pdf/slides_cut_page_13_REAL.png',
+      cover: '/assets/images/projects/GUZI/723eaa3893a7092c82a6dd2bdb6dbca3.png',
       gallery: [
+        '/assets/images/projects/GUZI/723eaa3893a7092c82a6dd2bdb6dbca3.png',
         '/assets/images/projects/REAL_slides_cut_pdf/slides_cut_page_13_REAL.png',
         '/assets/images/projects/REAL_slides_cut_pdf/slides_cut_page_12_REAL.png'
       ],
@@ -109,8 +110,9 @@
       link: '',
       year: '2025',
       tags: ['HCP Research', 'Market Strategy', 'Segmentation', 'Competitive Benchmarking', 'Data Visualization', 'PowerPoint'],
-      cover: '/assets/images/projects/REAL_slides_cut_pdf/slides_cut_page_01_REAL.png',
+      cover: '/assets/images/projects/Sulodix/a75907c7246a20835bcc255b889e596b.png',
       gallery: [
+        '/assets/images/projects/Sulodix/a75907c7246a20835bcc255b889e596b.png',
         '/assets/images/projects/REAL_slides_cut_pdf/slides_cut_page_01_REAL.png',
         '/assets/images/projects/REAL_slides_cut_pdf/slides_cut_page_03_REAL.png',
         '/assets/images/projects/REAL_slides_cut_pdf/slides_cut_page_06_REAL.png',
@@ -144,8 +146,9 @@
       link: '',
       year: '2024',
       tags: ['Industry Research', 'Regulatory Analysis', '3GPP NTN', 'WRC Spectrum', 'Competitive Architecture', 'PowerPoint'],
-      cover: '/assets/images/projects/REAL_slides_cut_pdf/slides_cut_page_09_REAL.png',
+      cover: '/assets/images/projects/satellite/d41db16489c45180e02267e967832bc2.png',
       gallery: [
+        '/assets/images/projects/satellite/d41db16489c45180e02267e967832bc2.png',
         '/assets/images/projects/REAL_slides_cut_pdf/slides_cut_page_09_REAL.png',
         '/assets/images/projects/REAL_slides_cut_pdf/slides_cut_page_08_REAL.png',
         '/assets/images/projects/REAL_slides_cut_pdf/slides_cut_page_10_REAL.png',
@@ -179,8 +182,9 @@
       link: '',
       year: '2025',
       tags: ['Financial Statement Analysis', 'Ratio Analysis', 'DuPont Analysis', 'Benchmarking', 'Business Models', 'PowerPoint'],
-      cover: '/assets/images/projects/REAL_hotel_123_pptx/huazhu_atour_slide_07_REAL.png',
+      cover: '/assets/images/projects/hotel/cover.png',
       gallery: [
+        '/assets/images/projects/hotel/cover.png',
         '/assets/images/projects/REAL_hotel_123_pptx/huazhu_atour_slide_07_REAL.png',
         '/assets/images/projects/REAL_hotel_123_pptx/huazhu_atour_slide_04_REAL.png',
         '/assets/images/projects/REAL_hotel_123_pptx/huazhu_atour_slide_10_REAL.png',
@@ -343,8 +347,9 @@
       link: '',
       year: 'CONCEPT',
       tags: ['Voice-First', 'Structured LLM', 'Timeline Visualization', 'PDF Export', 'Healthcare Product'],
-      cover: '/assets/images/projects/CONCEPT_ONLY_NOT_REAL/medication_companion_PRELIM_CONCEPT.png',
+      cover: '/assets/images/projects/CONCEPT_ONLY_NOT_REAL/medicine.png',
       gallery: [
+        '/assets/images/projects/CONCEPT_ONLY_NOT_REAL/medicine.png',
         '/assets/images/projects/CONCEPT_ONLY_NOT_REAL/medication_companion_PRELIM_CONCEPT.png'
       ],
       zh: {
@@ -375,8 +380,9 @@
       link: '',
       year: 'CONCEPT',
       tags: ['Music Metadata', 'Record Store Browsing', 'Conversational AI', 'Interactive Visuals', 'Audio Experience'],
-      cover: '/assets/images/projects/CONCEPT_ONLY_NOT_REAL/ai_record_store_PRELIM_CONCEPT.png',
+      cover: '/assets/images/projects/CONCEPT_ONLY_NOT_REAL/record.png',
       gallery: [
+        '/assets/images/projects/CONCEPT_ONLY_NOT_REAL/record.png',
         '/assets/images/projects/CONCEPT_ONLY_NOT_REAL/ai_record_store_PRELIM_CONCEPT.png'
       ],
       zh: {
